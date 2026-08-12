@@ -49,7 +49,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile })
     { id: 'resources', label: 'Resource Library', icon: Library },
     { id: 'bookmarks', label: 'My Bookmarks', icon: Bookmark },
     { id: 'ai-assistant', label: 'AI Study Mentor', icon: Bot, highlight: true },
-    { id: 'auth', label: 'Sign Up / Login', icon: LogIn, highlight: true },
     { id: 'admin', label: 'Admin Portal', icon: ShieldCheck }
   ];
 

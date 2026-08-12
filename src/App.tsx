@@ -27,7 +27,6 @@ import { SyllabusTrackerPage } from './pages/SyllabusTrackerPage';
 import { ResourceLibraryPage } from './pages/ResourceLibraryPage';
 import { BookmarksPage } from './pages/BookmarksPage';
 import { AdminPage } from './pages/AdminPage';
-import { AuthPage } from './pages/AuthPage';
 
 const MainLayout: React.FC = () => {
   const { currentPage } = useApp();
@@ -79,8 +78,6 @@ const MainLayout: React.FC = () => {
         return <BookmarksPage />;
       case 'admin':
         return <AdminPage />;
-      case 'auth':
-        return <AuthPage />;
       default:
         return <HomePage />;
     }
@@ -114,20 +111,10 @@ const MainLayout: React.FC = () => {
   );
 };
 
-const MainContent: React.FC = () => {
-  const { isAuthenticated } = useApp();
-
-  if (!isAuthenticated) {
-    return <AuthPage />;
-  }
-
-  return <MainLayout />;
-};
-
 export function App() {
   return (
     <AppProvider>
-      <MainContent />
+      <MainLayout />
     </AppProvider>
   );
 }
