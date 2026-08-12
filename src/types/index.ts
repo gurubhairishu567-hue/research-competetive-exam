@@ -35,7 +35,9 @@ export interface CurrentAffairItem {
   id: string;
   title: string;
   date: string;
-  category: 'National' | 'International' | 'Economy' | 'Polity' | 'Science & Tech' | 'Environment' | 'Defence' | 'Sports' | 'Awards' | 'Government Schemes' | 'Reports & Indices' | 'Appointments' | 'Important Days';
+  source?: 'The Hindu' | 'Times of India' | 'PIB' | 'Indian Express' | 'General';
+  paperPage?: string;
+  category: 'National' | 'International' | 'Economy' | 'Polity' | 'Science & Tech' | 'Environment' | 'Defence' | 'Sports' | 'Awards' | 'Government Schemes' | 'Reports & Indices' | 'Appointments' | 'Important Days' | 'Editorial';
   summary: string;
   detailedContent: string;
   whyItMatters: string;

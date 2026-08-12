@@ -678,9 +678,97 @@ export const SAMPLE_EXAMS: Exam[] = [
 
 export const SAMPLE_CURRENT_AFFAIRS: CurrentAffairItem[] = [
   {
+    id: 'ca-th-1',
+    title: 'The Hindu Analysis: Supreme Court Ruling on Sub-Classification within SC/ST Reservations',
+    date: '2026-08-11',
+    source: 'The Hindu',
+    paperPage: 'Page 1 - Front Page & Page 6 Editorial',
+    category: 'Polity',
+    summary: 'The Hindu lead editorial analyzes the landmark 7-judge Supreme Court ruling permitting states to create sub-categories within SCs/STs for targeted affirmative action.',
+    detailedContent: `### The Hindu Editorial & Lead Analysis: Sub-Classification of Scheduled Castes
+*Published on Page 1 & Page 6 of today's edition of The Hindu.*
+
+#### Background & Legal Context:
+A 7-judge Constitution Bench of the Supreme Court of India in *State of Punjab v. Davinder Singh* held by a 6:1 majority that state legislatures have the constitutional power to sub-classify Scheduled Castes (SCs) and Scheduled Tribes (STs) to grant preference in reservations to the most backward sub-groups.
+
+#### Key Constitutional Takeaways for UPSC GS-2:
+1. **Article 14 & Article 16(4):** The Court affirmed that sub-classification does not violate the principle of equality under Article 14, provided it is backed by empirical data demonstrating inadequate representation.
+2. **Article 341:** Sub-classification does not alter the President's List of Scheduled Castes notified under Article 341(1); it merely allocates quota percentages internally.
+3. **Creamy Layer Concept:** The majority opinion suggested that the 'creamy layer' principle should also apply to SCs and STs to exclude affluent members from reservation benefits.
+
+#### Exam Pointers for Prelims & Mains:
+- Landmark case overruled: *E.V. Chinnaiah v. State of Andhra Pradesh (2005)*.
+- Constitutional Articles invoked: Article 14, Article 15(4), Article 16(4), Article 341, Article 342.`,
+    whyItMatters: 'Reshapes social justice jurisprudence, state legislative powers regarding affirmative action, and public administration policy.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 2: Indian Constitution, Fundamental Rights, Reservation Policies, Judiciary.' },
+      { exam: 'State PCS', relevance: 'Polity: State reservation norms & Supreme Court constitutional benchmarks.' }
+    ],
+    keyFacts: [
+      'Supreme Court Bench Size: 7 Judges (6:1 Majority)',
+      'Overruled Decision: E.V. Chinnaiah v. State of A.P. (2005)',
+      'Relevant Articles: Article 14, 16(4), 341 & 342'
+    ],
+    keywords: ['The Hindu', 'Editorial', 'Sub-Classification', 'Supreme Court', 'Article 341', 'Reservation'],
+    possibleMCQs: [
+      {
+        question: 'Under which Article of the Indian Constitution does the President notify the list of Scheduled Castes for each State/UT?',
+        options: ['Article 338', 'Article 341', 'Article 342', 'Article 366'],
+        correctIndex: 1,
+        explanation: 'Article 341 empowers the President to specify the castes, races, or tribes deemed to be Scheduled Castes.'
+      }
+    ],
+    sources: [{ name: 'The Hindu E-Paper', url: 'https://www.thehindu.com', date: '2026-08-11' }],
+    readTime: '5 min read'
+  },
+  {
+    id: 'ca-toi-1',
+    title: 'Times of India Special: India-EFTA Free Trade Agreement (TEPA) Comes into Force',
+    date: '2026-08-11',
+    source: 'Times of India',
+    paperPage: 'Page 14 - Business & Economy',
+    category: 'Economy',
+    summary: 'Times of India reports on the formal implementation of the Trade and Economic Partnership Agreement (TEPA) bringing $100 Billion FDI commitments from Switzerland, Norway, Iceland & Liechtenstein.',
+    detailedContent: `### Times of India Front Business Analysis: India-EFTA TEPA Pact
+*Reported in Times of India Business Section.*
+
+#### Major Deal Features:
+1. **$100 Billion Investment Guarantee:** EFTA nations commit to invest $100 Billion in India over 15 years, generating 1 Million direct jobs.
+2. **Tariff Elimination:** India gets duty-free access for 99% of its industrial exports to EFTA countries (Switzerland, Norway, Iceland, Liechtenstein).
+3. **Swiss Watch & Chocolate Import Duty Phase-out:** Reduced import duties on high-end Swiss machinery, precision tools, and chocolates over 7-10 years.
+
+#### Significance for Competitive Exams:
+- EFTA is NOT part of the European Union (EU); it is a separate 4-nation economic bloc.
+- First Indian FTA with a legally binding investment commitment clause.`,
+    whyItMatters: 'Boosts India\'s foreign direct investment (FDI) inflow, manufacturing capability, and trade integration with European financial hubs.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Indian Economy, Bilateral & International Trade Agreements.' },
+      { exam: 'SSC CGL', relevance: 'General Awareness: EFTA member countries, $100B target figure.' },
+      { exam: 'IBPS PO', relevance: 'Banking & Financial Awareness: Foreign Investment (FDI) & Forex impacts.' }
+    ],
+    keyFacts: [
+      'EFTA Member Countries: Switzerland, Norway, Iceland, Liechtenstein',
+      'Target Investment: $100 Billion over 15 years',
+      'Pact Name: Trade and Economic Partnership Agreement (TEPA)'
+    ],
+    keywords: ['Times of India', 'TOI', 'EFTA', 'TEPA', 'FDI', 'Switzerland', 'Free Trade Agreement'],
+    possibleMCQs: [
+      {
+        question: 'Which of the following nations is NOT a member of the European Free Trade Association (EFTA)?',
+        options: ['Switzerland', 'Norway', 'Iceland', 'Germany'],
+        correctIndex: 3,
+        explanation: 'Germany is a member of the European Union (EU), not EFTA. EFTA consists of Switzerland, Norway, Iceland, and Liechtenstein.'
+      }
+    ],
+    sources: [{ name: 'Times of India', url: 'https://timesofindia.indiatimes.com', date: '2026-08-11' }],
+    readTime: '4 min read'
+  },
+  {
     id: 'ca-1',
     title: 'India Semiconductor Mission 2.0 Launched with ₹85,000 Crore Allocation',
     date: '2026-08-10',
+    source: 'PIB',
+    paperPage: 'PIB Release & National Dailies',
     category: 'Government Schemes',
     summary: 'The Cabinet approved Phase 2 of the India Semiconductor Mission (ISM 2.0) focusing on domestic commercial chip fabrication, silicon photonics, and advanced packaging ecosystems.',
     detailedContent: `The Union Cabinet chaired by the Prime Minister has formally launched Phase 2 of the India Semiconductor Mission (ISM 2.0) with an expanded outlay of ₹85,000 crore. Building upon ISM 1.0 which saw groundbreakings in Gujarat and Assam, ISM 2.0 prioritizes:
@@ -728,6 +816,8 @@ This mission aligns with India's goal to become a global chip manufacturing alte
     id: 'ca-2',
     title: 'RBI Keeps Repo Rate Unchanged at 6.25% in August 2026 MPC Meeting',
     date: '2026-08-08',
+    source: 'Times of India',
+    paperPage: 'Page 1 Business',
     category: 'Economy',
     summary: 'The Monetary Policy Committee (MPC) of the Reserve Bank of India decided unanimously to keep the policy repo rate unchanged at 6.25% while maintaining a "neutral" stance.',
     detailedContent: `The Reserve Bank of India's Monetary Policy Committee (MPC) headed by the Governor announced its bi-monthly monetary policy decision:
@@ -770,6 +860,8 @@ The Governor noted that core inflation has anchored steadily around 4%, allowing
     id: 'ca-3',
     title: 'Supreme Court Clarifies Scope of Article 300A (Right to Property)',
     date: '2026-08-05',
+    source: 'The Hindu',
+    paperPage: 'Page 8 Law & Constitution',
     category: 'Polity',
     summary: 'A Constitution Bench ruled that the Right to Property under Article 300A is a constitutional & human right, requiring fair compensation and statutory process before deprivation.',
     detailedContent: `In a landmark judgment, a five-judge Constitution Bench reaffirmed that although the Right to Property ceased to be a Fundamental Right via the 44th Constitutional Amendment Act, 1978, it remains a constitutional and fundamental human right under Article 300A.

@@ -34,6 +34,7 @@ interface AppContextType {
   selectedExam: Exam;
   setSelectedExamById: (id: string) => void;
   currentAffairs: CurrentAffairItem[];
+  setCurrentAffairs: React.Dispatch<React.SetStateAction<CurrentAffairItem[]>>;
   addCurrentAffairsArticle: (article: CurrentAffairItem) => void;
   questions: Question[];
   addQuestion: (question: Question) => void;
@@ -417,6 +418,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         selectedExam,
         setSelectedExamById,
         currentAffairs,
+        setCurrentAffairs,
         addCurrentAffairsArticle,
         questions,
         addQuestion,
