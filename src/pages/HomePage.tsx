@@ -16,7 +16,8 @@ import {
   Users,
   ChevronRight,
   HelpCircle,
-  Microscope
+  Microscope,
+  Globe
 } from 'lucide-react';
 import { SAMPLE_FAQS } from '../data/mockData';
 
@@ -120,6 +121,14 @@ export const HomePage: React.FC = () => {
             >
               <Sparkles className="w-4 h-4 text-indigo-600" />
               <span>Ask AI Mentor</span>
+            </button>
+
+            <button
+              onClick={() => setCurrentPage('world-news')}
+              className="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow transition flex items-center gap-2"
+            >
+              <Globe className="w-4 h-4 text-emerald-200" />
+              <span>World News (AI)</span>
             </button>
           </div>
 

@@ -14,6 +14,7 @@ import { ExamComparePage } from './pages/ExamComparePage';
 import { AIAssistantPage } from './pages/AIAssistantPage';
 import { ResearchModePage } from './pages/ResearchModePage';
 import { CurrentAffairsPage } from './pages/CurrentAffairsPage';
+import { WorldNewsPage } from './pages/WorldNewsPage';
 import { MCQPracticePage } from './pages/MCQPracticePage';
 import { QuizGeneratorPage } from './pages/QuizGeneratorPage';
 import { MockTestPage } from './pages/MockTestPage';
@@ -51,6 +52,8 @@ const MainLayout: React.FC = () => {
         return <ResearchModePage />;
       case 'current-affairs':
         return <CurrentAffairsPage />;
+      case 'world-news':
+        return <WorldNewsPage />;
       case 'mcq-practice':
         return <MCQPracticePage />;
       case 'quiz-generator':

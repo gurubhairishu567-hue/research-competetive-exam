@@ -57,6 +57,29 @@ export interface CurrentAffairItem {
   readTime: string;
 }
 
+export interface WorldNewsItem {
+  id: string;
+  title: string;
+  date: string;
+  region: 'North America' | 'Europe' | 'Asia-Pacific' | 'Middle East & Africa' | 'Latin America' | 'Global Economy' | 'Geopolitics & Defense' | 'Climate & Tech';
+  country: string;
+  sourceName: string;
+  sourceUrl: string;
+  summary: string;
+  detailedAnalysis: string;
+  geopoliticalImpact: string;
+  indiaRelevance: string;
+  keyFacts: string[];
+  keyOrganizations: string[];
+  possibleMCQs: {
+    question: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
+  }[];
+  readTime: string;
+}
+
 export interface Question {
   id: string;
   question: string;
