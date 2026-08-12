@@ -1,0 +1,6 @@
+{
+  "name": "ExamNexus AI - Competitive Exam Platform",
+  "description": "AI-powered competitive exam research, study, current-affairs, MCQ practice, and mock test platform for Indian competitive exams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
