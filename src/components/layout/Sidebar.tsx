@@ -61,7 +61,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile })
       
       {/* Mobile Sidebar Close Button */}
       <div className="lg:hidden p-4 flex items-center justify-between border-b border-slate-800">
-        <span className="font-bold text-white text-sm">ExaNexus AI Navigation</span>
+        <span className="font-bold text-white text-sm">ExamNexus AI Navigation</span>
         <button
           onClick={onCloseMobile}
           className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white"
