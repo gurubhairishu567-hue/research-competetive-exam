@@ -17,7 +17,8 @@ import {
   ChevronRight,
   HelpCircle,
   Microscope,
-  Globe
+  Globe,
+  UserPlus
 } from 'lucide-react';
 import { SAMPLE_FAQS } from '../data/mockData';
 
@@ -100,11 +101,19 @@ export const HomePage: React.FC = () => {
           {/* CTA Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button
-              onClick={() => setCurrentPage('dashboard')}
-              className="px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition flex items-center gap-2"
+              onClick={() => setCurrentPage('auth')}
+              className="px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-lg transition flex items-center gap-2 ring-2 ring-indigo-400/50"
             >
-              <Target className="w-4 h-4 text-white" />
-              <span>Start Preparing Now</span>
+              <UserPlus className="w-4 h-4 text-indigo-200" />
+              <span>Sign Up / Create Account</span>
+            </button>
+
+            <button
+              onClick={() => setCurrentPage('dashboard')}
+              className="px-6 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-sm transition flex items-center gap-2"
+            >
+              <Target className="w-4 h-4 text-emerald-400" />
+              <span>Aspirant Dashboard</span>
             </button>
 
             <button

@@ -22,7 +22,23 @@ export interface AppNotification {
   type: 'exam' | 'current-affairs' | 'reminder' | 'system';
 }
 
+interface RegisteredUserAccount {
+  name: string;
+  email: string;
+  password: string;
+  targetExam: string;
+  avatarPhoto?: string;
+  createdAt: string;
+}
+
 interface AppContextType {
+  isAuthenticated: boolean;
+  login: (email: string, password?: string) => { success: boolean; message?: string };
+  loginWithOtp: (identifier: string, isMobile?: boolean) => { success: boolean; message?: string };
+  signup: (name: string, email: string, password?: string, targetExam?: string, avatarPhoto?: string) => { success: boolean; message?: string };
+  updateProfilePhoto: (url: string) => void;
+  registeredUsers: RegisteredUserAccount[];
+  logout: () => void;
   user: UserProfile;
   setUser: React.Dispatch<React.SetStateAction<UserProfile>>;
   theme: 'light' | 'dark';
@@ -77,9 +93,53 @@ interface AppContextType {
   syncAllToSupabase: () => Promise<void>;
 }
 
+const SEED_REGISTERED_USERS: RegisteredUserAccount[] = [
+  {
+    name: 'Gurubhai Rishu',
+    email: 'gurubhairishu567@gmail.com',
+    password: 'password123',
+    targetExam: 'UPSC CSE (Civil Services)',
+    avatarPhoto: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+    createdAt: '2026-08-01'
+  },
+  {
+    name: 'Rahul Sharma',
+    email: 'rahul.upsc@examnexus.ai',
+    password: 'password123',
+    targetExam: 'UPSC CSE (Civil Services)',
+    avatarPhoto: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80',
+    createdAt: '2026-08-02'
+  },
+  {
+    name: 'Priya Verma',
+    email: 'priya.ssc@examnexus.ai',
+    password: 'password123',
+    targetExam: 'SSC CGL',
+    avatarPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
+    createdAt: '2026-08-03'
+  }
+];
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    const saved = localStorage.getItem('examnexus_is_authenticated');
+    return saved === 'true';
+  });
+
+  const [registeredUsers, setRegisteredUsers] = useState<RegisteredUserAccount[]>(() => {
+    const saved = localStorage.getItem('examnexus_registered_users');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return SEED_REGISTERED_USERS;
+      }
+    }
+    return SEED_REGISTERED_USERS;
+  });
+
   const [user, setUser] = useState<UserProfile>(() => {
     const saved = localStorage.getItem('examnexus_user');
     return saved ? JSON.parse(saved) : INITIAL_USER_PROFILE;
@@ -404,9 +464,170 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }));
   };
 
+  const updateProfilePhoto = (url: string) => {
+    setUser(prev => {
+      const updated = { ...prev, avatarPhoto: url };
+      localStorage.setItem('examnexus_user', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const login = (emailOrName: string, password?: string) => {
+    const query = emailOrName.trim().toLowerCase();
+    if (!query) {
+      return { success: false, message: 'Please enter your registered email address or username.' };
+    }
+    if (!password) {
+      return { success: false, message: 'Please enter your password.' };
+    }
+
+    // Strict account check against registered database
+    const account = registeredUsers.find(
+      u => u.email.toLowerCase() === query || u.name.toLowerCase() === query
+    );
+
+    if (!account) {
+      return {
+        success: false,
+        message: 'Account not found! Please Sign Up first before logging in.'
+      };
+    }
+
+    if (account.password !== password) {
+      return {
+        success: false,
+        message: 'Incorrect password! Please enter the exact password you set during Sign Up.'
+      };
+    }
+
+    // Credentials match!
+    const loggedInProfile: UserProfile = {
+      ...user,
+      name: account.name,
+      email: account.email,
+      targetExam: account.targetExam || user.targetExam,
+      avatarPhoto: account.avatarPhoto || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(account.name)}`
+    };
+
+    setUser(loggedInProfile);
+    setIsAuthenticated(true);
+    localStorage.setItem('examnexus_is_authenticated', 'true');
+    localStorage.setItem('examnexus_user', JSON.stringify(loggedInProfile));
+
+    return { success: true };
+  };
+
+  const loginWithOtp = (identifier: string, isMobile = false) => {
+    if (!identifier || !identifier.trim()) {
+      return { success: false, message: 'Please enter a valid phone number or email.' };
+    }
+    const cleanId = identifier.trim().toLowerCase();
+    
+    // Check if account already exists
+    const existing = registeredUsers.find(u => u.email.toLowerCase() === cleanId || u.name.toLowerCase() === cleanId);
+    
+    let updatedUser: UserProfile;
+    if (existing) {
+      updatedUser = {
+        ...user,
+        name: existing.name,
+        email: existing.email,
+        targetExam: existing.targetExam,
+        avatarPhoto: existing.avatarPhoto || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(existing.name)}`
+      };
+    } else {
+      updatedUser = {
+        ...user,
+        email: isMobile ? `${cleanId.replace(/\D/g, '')}@mobile.examnexus.ai` : cleanId,
+        name: isMobile ? `Aspirant (+91 ${cleanId.slice(-4)})` : cleanId.split('@')[0],
+        avatarPhoto: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanId)}`
+      };
+    }
+
+    setUser(updatedUser);
+    setIsAuthenticated(true);
+    localStorage.setItem('examnexus_is_authenticated', 'true');
+    localStorage.setItem('examnexus_user', JSON.stringify(updatedUser));
+    return { success: true };
+  };
+
+  const signup = (name: string, email: string, password?: string, targetExam?: string, avatarPhoto?: string) => {
+    const cleanName = name.trim();
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanName || !cleanEmail || !cleanEmail.includes('@')) {
+      return { success: false, message: 'Please provide a valid full name and email address.' };
+    }
+
+    if (!password || password.length < 6) {
+      return { success: false, message: 'Password must be at least 6 characters long.' };
+    }
+
+    // Check if email already registered
+    const existing = registeredUsers.find(u => u.email.toLowerCase() === cleanEmail);
+    if (existing) {
+      return {
+        success: false,
+        message: 'An account with this email already exists! Please switch to Log In.'
+      };
+    }
+
+    const avatar = avatarPhoto || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanName)}`;
+
+    const newAccount: RegisteredUserAccount = {
+      name: cleanName,
+      email: cleanEmail,
+      password: password,
+      targetExam: targetExam || 'UPSC CSE (Civil Services)',
+      avatarPhoto: avatar,
+      createdAt: new Date().toISOString()
+    };
+
+    const updatedRegisteredList = [newAccount, ...registeredUsers];
+    setRegisteredUsers(updatedRegisteredList);
+    localStorage.setItem('examnexus_registered_users', JSON.stringify(updatedRegisteredList));
+
+    const newUserProfile: UserProfile = {
+      name: cleanName,
+      email: cleanEmail,
+      avatarPhoto: avatar,
+      targetExam: targetExam || 'UPSC CSE (Civil Services)',
+      prepLevel: 'Beginner',
+      dailyTargetMinutes: 240,
+      studyTimeTodayMinutes: 45,
+      questionsSolvedToday: 15,
+      accuracyRate: 78,
+      testsCompletedCount: 2,
+      streakDays: 1
+    };
+
+    setUser(newUserProfile);
+    setIsAuthenticated(true);
+    localStorage.setItem('examnexus_is_authenticated', 'true');
+    localStorage.setItem('examnexus_user', JSON.stringify(newUserProfile));
+
+    // Try background sync to Supabase
+    saveToSupabase('user_profile', newUserProfile, cleanEmail).catch(() => {});
+
+    return { success: true };
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('examnexus_is_authenticated');
+    setCurrentPageState('home');
+  };
+
   return (
     <AppContext.Provider
       value={{
+        isAuthenticated,
+        login,
+        loginWithOtp,
+        signup,
+        updateProfilePhoto,
+        registeredUsers,
+        logout,
         user,
         setUser,
         theme,

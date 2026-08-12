@@ -192,6 +192,7 @@ export interface StudyPlan {
 export interface UserProfile {
   name: string;
   email: string;
+  avatarPhoto?: string;
   targetExam: string;
   prepLevel: 'Beginner' | 'Intermediate' | 'Advanced';
   dailyTargetMinutes: number;
