@@ -45,6 +45,44 @@ async function generateContentWithFallback(ai: GoogleGenAI, params: any) {
   }
   throw lastError;
 }
+
+// Robust JSON parser that strips markdown code blocks and handles edge formatting
+function cleanAndParseJson<T = any>(rawText: string | undefined | null, fallback: T): T {
+  if (!rawText || typeof rawText !== "string") return fallback;
+  try {
+    let cleaned = rawText.trim();
+    // Remove markdown code fences ```json ... ``` or ``` ... ```
+    if (cleaned.startsWith("```")) {
+      cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+    }
+    // Attempt standard parse first
+    return JSON.parse(cleaned);
+  } catch (err) {
+    try {
+      // If direct parse failed, attempt to isolate JSON object or array bounds
+      const firstBracket = rawText.indexOf("[");
+      const firstBrace = rawText.indexOf("{");
+      let startIdx = -1;
+      let endIdx = -1;
+
+      if (firstBracket !== -1 && (firstBrace === -1 || firstBracket < firstBrace)) {
+        startIdx = firstBracket;
+        endIdx = rawText.lastIndexOf("]");
+      } else if (firstBrace !== -1) {
+        startIdx = firstBrace;
+        endIdx = rawText.lastIndexOf("}");
+      }
+
+      if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+        const substring = rawText.substring(startIdx, endIdx + 1);
+        return JSON.parse(substring);
+      }
+    } catch (innerErr) {
+      console.warn("cleanAndParseJson fallback triggered:", innerErr);
+    }
+    return fallback;
+  }
+}
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
@@ -232,8 +270,7 @@ Return a strictly structured JSON response conforming to the schema.`;
       }
     });
 
-    const jsonText = response.text || "{}";
-    const data = JSON.parse(jsonText);
+    const data = cleanAndParseJson(response.text, {});
     return res.json(data);
   } catch (error: any) {
     console.error("Error in /api/ai/research:", error);
@@ -277,7 +314,7 @@ app.post("/api/ai/generate-quiz", async (req, res) => {
       }
     });
 
-    const questions = JSON.parse(response.text || "[]");
+    const questions = cleanAndParseJson(response.text, []);
     return res.json({ questions });
   } catch (error: any) {
     console.error("Error in /api/ai/generate-quiz:", error);
@@ -338,7 +375,7 @@ app.post("/api/ai/study-plan", async (req, res) => {
       }
     });
 
-    const plan = JSON.parse(response.text || "{}");
+    const plan = cleanAndParseJson(response.text, {});
     return res.json({ plan });
   } catch (error: any) {
     console.error("Error in /api/ai/study-plan:", error);
@@ -475,7 +512,7 @@ Return a JSON array of objects strictly matching the requested schema.`;
       }
     });
 
-    const articles = JSON.parse(response.text || "[]");
+    const articles = cleanAndParseJson(response.text, []);
     return res.json({ articles, timestamp: new Date().toISOString() });
   } catch (error: any) {
     console.error("Error in /api/current-affairs/fetch-live:", error?.message || error);
@@ -644,7 +681,7 @@ Return a JSON array of objects strictly matching the requested schema.`;
       }
     });
 
-    const articles = JSON.parse(response.text || "[]");
+    const articles = cleanAndParseJson(response.text, []);
     return res.json({ articles, timestamp: new Date().toISOString() });
   } catch (error: any) {
     console.error("Error in /api/world-news/fetch-live:", error?.message || error);
@@ -801,7 +838,10 @@ Return a clean JSON object with:
       }
     });
 
-    const noteData = JSON.parse(response.text || "{}");
+    const noteData = cleanAndParseJson(response.text, null);
+    if (!noteData) {
+      throw new Error("Failed to parse topic note response");
+    }
     return res.json({ note: noteData });
   } catch (error: any) {
     console.error("Error in /api/ai/generate-topic-note:", error);

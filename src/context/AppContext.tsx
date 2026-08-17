@@ -307,9 +307,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [questions, setQuestions] = useState<Question[]>(SAMPLE_QUESTIONS);
   const [mockTests] = useState<MockTest[]>(SAMPLE_MOCK_TESTS);
   
+  const safeParse = <T,>(key: string, fallback: T): T => {
+    try {
+      const saved = localStorage.getItem(key);
+      if (!saved) return fallback;
+      return JSON.parse(saved);
+    } catch {
+      return fallback;
+    }
+  };
+
   const [resources, setResources] = useState<ResourceItem[]>(() => {
-    const saved = localStorage.getItem('examnexus_resources');
-    return saved ? JSON.parse(saved) : SAMPLE_RESOURCES;
+    return safeParse('examnexus_resources', SAMPLE_RESOURCES);
   });
 
   const addResourceItem = (resItem: ResourceItem) => {
@@ -322,28 +331,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const [notes, setNotes] = useState<NoteItem[]>(() => {
-    const saved = localStorage.getItem('examnexus_notes');
-    return saved ? JSON.parse(saved) : SAMPLE_NOTES;
+    return safeParse('examnexus_notes', SAMPLE_NOTES);
   });
 
   const [flashcards, setFlashcards] = useState<Flashcard[]>(() => {
-    const saved = localStorage.getItem('examnexus_flashcards');
-    return saved ? JSON.parse(saved) : SAMPLE_FLASHCARDS;
+    return safeParse('examnexus_flashcards', SAMPLE_FLASHCARDS);
   });
 
   const [studyPlan, setStudyPlan] = useState<StudyPlan>(() => {
-    const saved = localStorage.getItem('examnexus_studyplan');
-    return saved ? JSON.parse(saved) : SAMPLE_STUDY_PLAN;
+    return safeParse('examnexus_studyplan', SAMPLE_STUDY_PLAN);
   });
 
   const [completedSyllabusTopics, setCompletedSyllabusTopics] = useState<string[]>(() => {
-    const saved = localStorage.getItem('examnexus_syllabus_completed');
-    return saved ? JSON.parse(saved) : ['pol-1', 'pol-2', 'eco-1', 'eco-2', 'env-1', 'env-2', 'qa-1', 'qa-2', 'rea-1'];
+    return safeParse('examnexus_syllabus_completed', ['pol-1', 'pol-2', 'eco-1', 'eco-2', 'env-1', 'env-2', 'qa-1', 'qa-2', 'rea-1']);
   });
 
   const [bookmarks, setBookmarks] = useState<BookmarkItem[]>(() => {
-    const saved = localStorage.getItem('examnexus_bookmarks');
-    return saved ? JSON.parse(saved) : [
+    return safeParse('examnexus_bookmarks', [
       {
         id: 'ca-1',
         type: 'article',
@@ -360,12 +364,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         contentSnippet: 'With reference to the Preamble of the Indian Constitution...',
         dateAdded: '2026-08-11'
       }
-    ];
+    ]);
   });
 
   const [testHistory, setTestHistory] = useState<any[]>(() => {
-    const saved = localStorage.getItem('examnexus_testhistory');
-    return saved ? JSON.parse(saved) : [
+    return safeParse('examnexus_testhistory', [
       {
         testId: 'mock-upsc-prelims-1',
         testTitle: 'UPSC Prelims Full Length Mock Test - GS Paper 1',
@@ -387,7 +390,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           'Focus on Protected Areas and COP agreements for Environment.'
         ]
       }
-    ];
+    ]);
   });
 
   const [notifications, setNotifications] = useState<AppNotification[]>([
