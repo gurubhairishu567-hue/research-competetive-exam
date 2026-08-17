@@ -108,9 +108,6 @@ const MainLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors selection:bg-indigo-600 selection:text-white relative">
       
-      {/* Top Dynamic Seasonal & Indian Festival Ribbon */}
-      <SeasonalThemeBanner />
-
       {/* Top Navigation Bar */}
       <Navbar onToggleMobileSidebar={() => setIsMobileSidebarOpen(prev => !prev)} />
 

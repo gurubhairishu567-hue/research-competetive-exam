@@ -11,7 +11,8 @@ import {
   createFolderInSupabase,
   createFlashcardInSupabase,
   createCurrentAffairInSupabase,
-  createQuestionInSupabase
+  createQuestionInSupabase,
+  createResourceInSupabase
 } from '../lib/supabase';
 
 export interface BookmarkItem {
@@ -102,6 +103,8 @@ interface AppContextType {
   setFlashcards: React.Dispatch<React.SetStateAction<Flashcard[]>>;
   addFlashcard: (fc: Omit<Flashcard, 'id'>) => void;
   resources: ResourceItem[];
+  setResources: React.Dispatch<React.SetStateAction<ResourceItem[]>>;
+  addResourceItem: (res: ResourceItem) => void;
   studyPlan: StudyPlan;
   setStudyPlan: React.Dispatch<React.SetStateAction<StudyPlan>>;
   toggleTaskCompletion: (weekNum: number, taskId: string) => void;
@@ -147,7 +150,7 @@ const SEED_REGISTERED_USERS: RegisteredUserAccount[] = [
   {
     name: 'Gurubhai Rishu',
     email: 'gurubhairishu567@gmail.com',
-    password: 'password123',
+    password: 'rishu@2005',
     targetExam: 'UPSC CSE (Civil Services)',
     avatarPhoto: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
     createdAt: '2026-08-01'
@@ -170,6 +173,19 @@ const SEED_REGISTERED_USERS: RegisteredUserAccount[] = [
   }
 ];
 
+const GUEST_INITIAL_USER_PROFILE: UserProfile = {
+  name: 'Student Aspirant',
+  email: 'aspirant@examnexus.ai',
+  targetExam: 'UPSC Civil Services',
+  prepLevel: 'Intermediate',
+  dailyTargetMinutes: 240,
+  studyTimeTodayMinutes: 165,
+  questionsSolvedToday: 38,
+  accuracyRate: 78.5,
+  testsCompletedCount: 12,
+  streakDays: 14,
+};
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -180,19 +196,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [registeredUsers, setRegisteredUsers] = useState<RegisteredUserAccount[]>(() => {
     const saved = localStorage.getItem('examnexus_registered_users');
+    let usersList = SEED_REGISTERED_USERS;
     if (saved) {
       try {
-        return JSON.parse(saved);
+        usersList = JSON.parse(saved);
       } catch (e) {
-        return SEED_REGISTERED_USERS;
+        usersList = SEED_REGISTERED_USERS;
       }
     }
-    return SEED_REGISTERED_USERS;
+    // Always guarantee admin user with rishu@2005 exists
+    const adminIdx = usersList.findIndex(u => u.email.toLowerCase() === 'gurubhairishu567@gmail.com');
+    if (adminIdx >= 0) {
+      usersList[adminIdx] = {
+        ...usersList[adminIdx],
+        password: 'rishu@2005'
+      };
+    } else {
+      usersList.push(SEED_REGISTERED_USERS[0]);
+    }
+    return usersList;
   });
 
   const [user, setUser] = useState<UserProfile>(() => {
     const saved = localStorage.getItem('examnexus_user');
-    return saved ? JSON.parse(saved) : INITIAL_USER_PROFILE;
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return GUEST_INITIAL_USER_PROFILE;
+      }
+    }
+    return GUEST_INITIAL_USER_PROFILE;
   });
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -258,9 +292,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const isAdmin = Boolean(
-    isAdminMode || 
-    user?.role === 'admin' || 
-    user?.email === 'gurubhairishu567@gmail.com'
+    isAuthenticated && 
+    user?.email?.toLowerCase() === 'gurubhairishu567@gmail.com'
   );
 
   const [exams] = useState<Exam[]>(SAMPLE_EXAMS);
@@ -271,7 +304,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [currentAffairs, setCurrentAffairs] = useState<CurrentAffairItem[]>(SAMPLE_CURRENT_AFFAIRS);
   const [questions, setQuestions] = useState<Question[]>(SAMPLE_QUESTIONS);
   const [mockTests] = useState<MockTest[]>(SAMPLE_MOCK_TESTS);
-  const [resources] = useState<ResourceItem[]>(SAMPLE_RESOURCES);
+  
+  const [resources, setResources] = useState<ResourceItem[]>(() => {
+    const saved = localStorage.getItem('examnexus_resources');
+    return saved ? JSON.parse(saved) : SAMPLE_RESOURCES;
+  });
+
+  const addResourceItem = (resItem: ResourceItem) => {
+    setResources(prev => {
+      const updated = [resItem, ...prev];
+      localStorage.setItem('examnexus_resources', JSON.stringify(updated));
+      return updated;
+    });
+    createResourceInSupabase(resItem, user?.email || 'gurubhairishu567@gmail.com');
+  };
 
   const [notes, setNotes] = useState<NoteItem[]>(() => {
     const saved = localStorage.getItem('examnexus_notes');
@@ -901,6 +947,8 @@ Source: Economic Division, Ministry of Finance (indiabudget.gov.in/economicsurve
         setFlashcards,
         addFlashcard,
         resources,
+        setResources,
+        addResourceItem,
         studyPlan,
         setStudyPlan,
         toggleTaskCompletion,

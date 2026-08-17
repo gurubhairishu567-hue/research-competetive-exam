@@ -207,35 +207,28 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             </div>
           )}
 
-          {/* Quick 1-Click Demo Accounts (Not Boring / High Usability) */}
+          {/* Quick 1-Click Demo Aspirant Accounts */}
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-2">
             <div className="flex items-center justify-between text-[11px] font-bold text-slate-500 dark:text-slate-400">
               <span className="flex items-center gap-1">
                 <Zap className="w-3 h-3 text-amber-500" />
-                <span>Quick 1-Click Demo Fill:</span>
+                <span>Quick Aspirant Demo Accounts:</span>
               </span>
-              <span className="text-[10px] font-mono text-indigo-500">password: password123</span>
+              <span className="text-[10px] font-mono text-indigo-500">Student Demo</span>
             </div>
             
             <div className="flex flex-wrap gap-1.5">
               <button
                 type="button"
-                onClick={() => handleQuickFill('gurubhairishu567@gmail.com', 'password123')}
-                className="px-2.5 py-1 rounded-xl bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 font-extrabold hover:bg-indigo-200 transition border border-indigo-200 dark:border-indigo-800"
-              >
-                👑 Admin (Gurubhai)
-              </button>
-              <button
-                type="button"
                 onClick={() => handleQuickFill('rahul.upsc@examnexus.ai', 'password123')}
-                className="px-2.5 py-1 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 font-extrabold hover:bg-blue-200 transition border border-blue-200 dark:border-blue-800"
+                className="px-2.5 py-1 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 font-extrabold hover:bg-blue-200 transition border border-blue-200 dark:border-blue-800 text-[11px]"
               >
-                🎯 UPSC (Rahul)
+                🎯 UPSC CSE (Rahul)
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('priya.ssc@examnexus.ai', 'password123')}
-                className="px-2.5 py-1 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-extrabold hover:bg-emerald-200 transition border border-emerald-200 dark:border-emerald-800"
+                className="px-2.5 py-1 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-extrabold hover:bg-emerald-200 transition border border-emerald-200 dark:border-emerald-800 text-[11px]"
               >
                 ⚡ SSC CGL (Priya)
               </button>

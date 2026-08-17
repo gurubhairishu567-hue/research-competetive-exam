@@ -31,7 +31,7 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile }) => {
-  const { currentPage, setCurrentPage, theme, toggleTheme } = useApp();
+  const { currentPage, setCurrentPage, theme, toggleTheme, isAdmin } = useApp();
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -51,7 +51,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile })
     { id: 'resources', label: 'Resource Library', icon: Library },
     { id: 'bookmarks', label: 'My Bookmarks', icon: Bookmark },
     { id: 'ai-assistant', label: 'AI Study Mentor', icon: Bot, highlight: true },
-    { id: 'admin', label: 'Admin Portal', icon: ShieldCheck }
+    ...(isAdmin ? [{ id: 'admin', label: 'Admin Portal', icon: ShieldCheck }] : [])
   ];
 
   const handleNavClick = (id: string) => {
@@ -75,10 +75,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile })
 
       {/* Nav List */}
       <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        <div className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-          Core Preparation
-        </div>
-
         {navItems.map(item => {
           const Icon = item.icon;
           const isActive = currentPage === item.id;
@@ -106,44 +102,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile })
             </button>
           );
         })}
-      </div>
-
-      {/* Theme Toggle & Footer Info Box */}
-      <div className="p-3 m-3 space-y-2">
-        {/* Light / Dark Mode Toggle Pill */}
-        <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs">
-          <button
-            onClick={() => theme === 'dark' && toggleTheme()}
-            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 font-bold transition ${
-              theme === 'light'
-                ? 'bg-white text-amber-600 shadow-sm border border-slate-200/80'
-                : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
-          >
-            <Sun className="w-3.5 h-3.5 text-amber-500" />
-            <span className="text-[11px]">Light</span>
-          </button>
-          <button
-            onClick={() => theme === 'light' && toggleTheme()}
-            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 font-bold transition ${
-              theme === 'dark'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
-          >
-            <Moon className="w-3.5 h-3.5" />
-            <span className="text-[11px]">Dark</span>
-          </button>
-        </div>
-
-        {/* Footer Info Box */}
-        <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-[11px] text-slate-500 dark:text-slate-400">
-          <div className="flex items-center justify-between font-semibold text-slate-800 dark:text-slate-200 mb-0.5">
-            <span>Target Exam</span>
-            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-bold">ACTIVE</span>
-          </div>
-          <p className="text-slate-900 dark:text-slate-300 text-[11px] truncate font-medium">UPSC Civil Services</p>
-        </div>
       </div>
 
     </div>
