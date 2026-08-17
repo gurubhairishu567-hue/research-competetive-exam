@@ -24,9 +24,9 @@ const getGeminiClient = () => {
   });
 };
 
-// Helper to invoke Gemini with model fallback (gemini-3.6-flash -> gemini-2.5-flash -> gemini-2.5-pro)
+// Helper to invoke Gemini with model fallback (gemini-3.7-flash -> gemini-flash-latest -> gemini-3.1-flash-lite)
 async function generateContentWithFallback(ai: GoogleGenAI, params: any) {
-  const models = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+  const models = ["gemini-3.7-flash", "gemini-flash-latest", "gemini-3.1-flash-lite"];
   let lastError: any = null;
 
   for (const model of models) {
@@ -39,15 +39,7 @@ async function generateContentWithFallback(ai: GoogleGenAI, params: any) {
     } catch (err: any) {
       console.warn(`Model ${model} call failed:`, err?.message || err);
       lastError = err;
-      // If quota/rate limit error (429 or RESOURCE_EXHAUSTED), proceed to next model in list
-      const isQuotaError =
-        err?.status === 429 ||
-        err?.code === 429 ||
-        (err?.message && (err.message.includes("429") || err.message.includes("RESOURCE_EXHAUSTED") || err.message.includes("quota")));
-      if (isQuotaError) {
-        continue;
-      }
-      // For non-429 errors, also attempt fallback
+      // Continue to next fallback model
       continue;
     }
   }
@@ -78,7 +70,7 @@ Formatting instructions:
 - Never fabricate sources or fake official statistics.`;
 
     let text = "";
-    const models = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-2.5-pro"];
+    const models = ["gemini-3.7-flash", "gemini-flash-latest", "gemini-3.1-flash-lite"];
     let chatError: any = null;
 
     for (const model of models) {

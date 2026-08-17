@@ -1,4 +1,4 @@
-import { Exam, CurrentAffairItem, Question, MockTest, NoteItem, Flashcard, ResourceItem, StudyPlan, UserProfile } from '../types';
+import { Exam, CurrentAffairItem, WorldNewsItem, Question, MockTest, NoteItem, Flashcard, ResourceItem, StudyPlan, UserProfile } from '../types';
 
 export const INITIAL_USER_PROFILE: UserProfile = {
   name: "Gurubhai Rishu",
@@ -20,6 +20,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'UPSC CSE',
     category: 'UPSC',
     conductingBody: 'Union Public Service Commission',
+    officialWebsite: 'https://upsc.gov.in',
+    officialWebsiteName: 'Union Public Service Commission (upsc.gov.in)',
     qualification: 'Bachelor\'s Degree in any discipline from a recognized University',
     ageLimit: '21 to 32 years (Relaxations for reserved categories)',
     attempts: '6 attempts (General), 9 attempts (OBC), Unlimited (SC/ST up to age limit)',
@@ -118,6 +120,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'SSC CGL',
     category: 'SSC',
     conductingBody: 'Staff Selection Commission',
+    officialWebsite: 'https://ssc.gov.in',
+    officialWebsiteName: 'Staff Selection Commission (ssc.gov.in)',
     qualification: 'Bachelor\'s Degree in any discipline',
     ageLimit: '18 to 32 years (varies by post code)',
     attempts: 'Unlimited until upper age limit',
@@ -195,6 +199,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'IBPS PO',
     category: 'Banking',
     conductingBody: 'Institute of Banking Personnel Selection',
+    officialWebsite: 'https://www.ibps.in',
+    officialWebsiteName: 'Institute of Banking Personnel Selection (ibps.in)',
     qualification: 'Graduation Degree in any stream',
     ageLimit: '20 to 30 years',
     attempts: 'Unlimited until age limit',
@@ -245,6 +251,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'RRB NTPC',
     category: 'Railway',
     conductingBody: 'Railway Recruitment Boards',
+    officialWebsite: 'https://indianrailways.gov.in',
+    officialWebsiteName: 'Ministry of Railways / RRB (indianrailways.gov.in)',
     qualification: '12th Pass or Graduate depending on post',
     ageLimit: '18 to 33 years',
     attempts: 'Unlimited until upper age limit',
@@ -295,6 +303,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'UP Police Constable',
     category: 'UP Police',
     conductingBody: 'Uttar Pradesh Police Recruitment and Promotion Board (UPPRPB)',
+    officialWebsite: 'https://uppbpb.gov.in',
+    officialWebsiteName: 'UPPRPB Official Portal (uppbpb.gov.in)',
     qualification: '10+2 (Intermediate) Pass from a recognized Board',
     ageLimit: '18 to 22 years (Male), 18 to 25 years (Female) [Age relaxation applicable]',
     attempts: 'Unlimited until age limit',
@@ -355,6 +365,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'UP Police SI',
     category: 'UP Police',
     conductingBody: 'Uttar Pradesh Police Recruitment and Promotion Board (UPPRPB)',
+    officialWebsite: 'https://uppbpb.gov.in',
+    officialWebsiteName: 'UPPRPB Official Portal (uppbpb.gov.in)',
     qualification: 'Bachelor\'s Degree in any stream from a recognized University',
     ageLimit: '21 to 28 years (Age relaxations for reserved categories)',
     attempts: 'Unlimited until age limit',
@@ -406,6 +418,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'SSC CHSL',
     category: 'SSC',
     conductingBody: 'Staff Selection Commission (SSC)',
+    officialWebsite: 'https://ssc.gov.in',
+    officialWebsiteName: 'Staff Selection Commission (ssc.gov.in)',
     qualification: '10+2 (Higher Secondary) Pass from a recognized Board',
     ageLimit: '18 to 27 years (Age relaxations apply)',
     attempts: 'Unlimited until upper age limit',
@@ -457,6 +471,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'SSC GD',
     category: 'SSC',
     conductingBody: 'Staff Selection Commission (SSC)',
+    officialWebsite: 'https://ssc.gov.in',
+    officialWebsiteName: 'Staff Selection Commission (ssc.gov.in)',
     qualification: '10th Class (Matriculation) Pass from a recognized Board',
     ageLimit: '18 to 23 years (Upper age relaxation for OBC/SC/ST)',
     attempts: 'Unlimited until age limit',
@@ -508,6 +524,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'SSC MTS',
     category: 'SSC',
     conductingBody: 'Staff Selection Commission (SSC)',
+    officialWebsite: 'https://ssc.gov.in',
+    officialWebsiteName: 'Staff Selection Commission (ssc.gov.in)',
     qualification: 'Matriculation (10th Pass) from a recognized Board',
     ageLimit: '18 to 25 / 27 years depending on post code',
     attempts: 'Unlimited until age limit',
@@ -567,6 +585,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'SSC Steno',
     category: 'SSC',
     conductingBody: 'Staff Selection Commission (SSC)',
+    officialWebsite: 'https://ssc.gov.in',
+    officialWebsiteName: 'Staff Selection Commission (ssc.gov.in)',
     qualification: '10+2 (Intermediate) Pass from a recognized Board',
     ageLimit: '18 to 30 years (Grade C), 18 to 27 years (Grade D)',
     attempts: 'Unlimited until age limit',
@@ -617,6 +637,8 @@ export const SAMPLE_EXAMS: Exam[] = [
     shortName: 'Banking Exams (SBI / IBPS)',
     category: 'Banking',
     conductingBody: 'State Bank of India (SBI) & IBPS',
+    officialWebsite: 'https://sbi.co.in/web/careers',
+    officialWebsiteName: 'State Bank of India Careers Portal (sbi.co.in)',
     qualification: 'Graduation Degree in any discipline',
     ageLimit: '20 to 30 years (PO), 20 to 28 years (Clerk)',
     attempts: '4 attempts (General PO), Unlimited for reserved categories',
@@ -677,6 +699,7 @@ export const SAMPLE_EXAMS: Exam[] = [
 ];
 
 export const SAMPLE_CURRENT_AFFAIRS: CurrentAffairItem[] = [
+  // 1. POLITY & GOVERNANCE
   {
     id: 'ca-th-1',
     title: 'The Hindu Analysis: Supreme Court Ruling on Sub-Classification within SC/ST Reservations',
@@ -722,6 +745,82 @@ A 7-judge Constitution Bench of the Supreme Court of India in *State of Punjab v
     readTime: '5 min read'
   },
   {
+    id: 'ca-sc-3',
+    title: 'Supreme Court Clarifies Scope of Article 300A (Right to Property as a Human Right)',
+    date: '2026-08-05',
+    source: 'The Hindu',
+    paperPage: 'Page 8 Law & Constitution',
+    category: 'Polity',
+    summary: 'A Constitution Bench ruled that the Right to Property under Article 300A is a constitutional & human right, requiring fair compensation and statutory process before deprivation.',
+    detailedContent: `In a landmark judgment, a five-judge Constitution Bench reaffirmed that although the Right to Property ceased to be a Fundamental Right via the 44th Constitutional Amendment Act, 1978, it remains a constitutional and fundamental human right under Article 300A.
+
+The Court held that:
+1. No citizen can be deprived of property save by authority of law.
+2. The term 'law' under Article 300A means a valid legislative enactment, not mere executive orders or administrative guidelines.
+3. Adequate compensation and a fair procedural process are implicit requirements under Article 300A.`,
+    whyItMatters: 'Reinforces constitutional safeguards against arbitrary state land acquisition and clarifies the hierarchy between Fundamental Rights and Constitutional Rights.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 2: Indian Constitution, Fundamental Rights vs Legal Rights, Landmark Judgments.' },
+      { exam: 'SSC CGL', relevance: 'Polity: 44th Amendment Act 1978, Constitutional Articles.' }
+    ],
+    keyFacts: [
+      'Original Status: Fundamental Right under Article 19(1)(f) & Article 31',
+      '44th Amendment Act, 1978 moved Right to Property to Part XII, Chapter IV, Article 300A',
+      'Current Status: Constitutional / Legal Right'
+    ],
+    keywords: ['Article 300A', '44th Amendment 1978', 'Right to Property', 'Land Acquisition', 'Constitution Bench'],
+    possibleMCQs: [
+      {
+        question: 'Which constitutional amendment removed the Right to Property from the list of Fundamental Rights?',
+        options: ['42nd Amendment Act, 1976', '44th Amendment Act, 1978', '73rd Amendment Act, 1992', '86th Amendment Act, 2002'],
+        correctIndex: 1,
+        explanation: 'The 44th Constitutional Amendment Act of 1978 omitted Article 19(1)(f) and Article 31, creating Article 300A.'
+      }
+    ],
+    sources: [
+      { name: 'Supreme Court of India Judgments', url: 'https://main.sci.gov.in', date: '2026-08-05' }
+    ],
+    readTime: '3 min read'
+  },
+  {
+    id: 'ca-pol-3',
+    title: 'Supreme Court Upholds Provisions of Chief Election Commissioner & ECs Appointment Act',
+    date: '2026-08-04',
+    source: 'The Hindu',
+    paperPage: 'Page 1 National & Legal',
+    category: 'Polity',
+    summary: 'The Supreme Court examined the Chief Election Commissioner and other Election Commissioners (Appointment, Conditions of Service and Term of Office) Act, 2023.',
+    detailedContent: `The Supreme Court reviewed petitions regarding the statutory Selection Committee for the appointment of the Chief Election Commissioner (CEC) and Election Commissioners (ECs).
+
+#### Key Statutory Provisions:
+1. **Selection Committee Composition:** Prime Minister (Chairperson), Leader of Opposition / Single largest opposition party leader in Lok Sabha, and a Union Cabinet Minister nominated by the PM.
+2. **Search Committee:** Headed by the Cabinet Secretary, preparing a panel of five eligible persons.
+3. **Protection & Status:** CEC and ECs receive salary, dearness allowance, and conditions of service equivalent to a Supreme Court Judge.`,
+    whyItMatters: 'Essential for constitutional machinery, independence of the Election Commission of India (Article 324), and electoral integrity.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 2: Election Commission of India (Article 324), Appointment process, Separation of Powers.' },
+      { exam: 'State PCS', relevance: 'Polity: Constitutional Bodies & statutory appointment committees.' }
+    ],
+    keyFacts: [
+      'Constitutional Provision: Article 324(2)',
+      'Statute: CEC and other ECs Act, 2023',
+      'Selection Committee: PM, Leader of Opposition, and Union Cabinet Minister'
+    ],
+    keywords: ['Election Commission', 'Article 324', 'CEC Act 2023', 'Selection Committee', 'Supreme Court'],
+    possibleMCQs: [
+      {
+        question: 'Under Article 324 of the Constitution, who is vested with the superintendence, direction, and control of elections in India?',
+        options: ['Ministry of Law and Justice', 'Election Commission of India', 'President of India', 'Supreme Court of India'],
+        correctIndex: 1,
+        explanation: 'Article 324 vests the superintendence, direction, and control of elections in the Election Commission of India.'
+      }
+    ],
+    sources: [{ name: 'The Hindu', url: 'https://thehindu.com', date: '2026-08-04' }],
+    readTime: '4 min read'
+  },
+
+  // 2. ECONOMY & BANKING
+  {
     id: 'ca-toi-1',
     title: 'Times of India Special: India-EFTA Free Trade Agreement (TEPA) Comes into Force',
     date: '2026-08-11',
@@ -764,56 +863,7 @@ A 7-judge Constitution Bench of the Supreme Court of India in *State of Punjab v
     readTime: '4 min read'
   },
   {
-    id: 'ca-1',
-    title: 'India Semiconductor Mission 2.0 Launched with ₹85,000 Crore Allocation',
-    date: '2026-08-10',
-    source: 'PIB',
-    paperPage: 'PIB Release & National Dailies',
-    category: 'Government Schemes',
-    summary: 'The Cabinet approved Phase 2 of the India Semiconductor Mission (ISM 2.0) focusing on domestic commercial chip fabrication, silicon photonics, and advanced packaging ecosystems.',
-    detailedContent: `The Union Cabinet chaired by the Prime Minister has formally launched Phase 2 of the India Semiconductor Mission (ISM 2.0) with an expanded outlay of ₹85,000 crore. Building upon ISM 1.0 which saw groundbreakings in Gujarat and Assam, ISM 2.0 prioritizes:
-
-1. End-to-end silicon wafer manufacturing and compound semiconductor fabs.
-2. Design Linked Incentive (DLI) 2.0 supporting 50+ domestic semiconductor startups.
-3. R&D cluster development at IIT Madras and IISc Bangalore for next-generation gallium nitride (GaN) and silicon photonics chips.
-4. Setting up of National Semiconductor Talent Hub to train 100,000 specialized engineers over 5 years.
-
-This mission aligns with India's goal to become a global chip manufacturing alternative in the global electronics supply chain.`,
-    whyItMatters: 'Strategic autonomy in critical electronic hardware, reduction in import dependencies ($30B+ annually), and boosting high-tech electronics export manufacturing.',
-    examRelevance: [
-      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Science & Technology, Indigenization of Tech, Infrastructure Development, Government Schemes.' },
-      { exam: 'SSC CGL', relevance: 'General Awareness: Outlay amount, launching ministry, full forms, tech hubs.' },
-      { exam: 'IBPS PO', relevance: 'Banking & Financial Awareness: Financial outlays, DLI scheme, industrial credit growth.' }
-    ],
-    keyFacts: [
-      'Total ISM 2.0 Outlay: ₹85,000 Crore',
-      'Nodal Ministry: Ministry of Electronics and Information Technology (MeitY)',
-      'Target Talent: 100,000 semiconductor engineers trained by 2030',
-      'Focus Fabs: Compound Semiconductors, OSAT (Outsourced Semiconductor Assembly and Test), Silicon Photonics'
-    ],
-    keywords: ['Semiconductor', 'MeitY', 'DLI Scheme', 'Fab', 'OSAT', 'Gallium Nitride', 'Wafer'],
-    possibleMCQs: [
-      {
-        question: 'Which ministry is the nodal agency for executing the India Semiconductor Mission (ISM)?',
-        options: ['Ministry of Commerce and Industry', 'Ministry of Electronics & Information Technology (MeitY)', 'Ministry of Science & Technology', 'NITI Aayog'],
-        correctIndex: 1,
-        explanation: 'ISM is executed by the Digital India Corporation under MeitY.'
-      },
-      {
-        question: 'What is the primary objective of the Design Linked Incentive (DLI) scheme under ISM?',
-        options: ['Financial assistance for hardware exports', 'Financial incentives & design infrastructure support for domestic semiconductor startups', 'Import duty waiver on silicon wafers', 'Subsidized power for fab plants'],
-        correctIndex: 1,
-        explanation: 'DLI offers financial incentives and design infrastructure to Indian startups engaged in semiconductor design.'
-      }
-    ],
-    sources: [
-      { name: 'Press Information Bureau (PIB)', url: 'https://pib.gov.in', date: '2026-08-10' },
-      { name: 'MeitY Official Portal', url: 'https://meity.gov.in', date: '2026-08-10' }
-    ],
-    readTime: '4 min read'
-  },
-  {
-    id: 'ca-2',
+    id: 'ca-rbi-2',
     title: 'RBI Keeps Repo Rate Unchanged at 6.25% in August 2026 MPC Meeting',
     date: '2026-08-08',
     source: 'Times of India',
@@ -857,42 +907,560 @@ The Governor noted that core inflation has anchored steadily around 4%, allowing
     readTime: '3 min read'
   },
   {
-    id: 'ca-3',
-    title: 'Supreme Court Clarifies Scope of Article 300A (Right to Property)',
-    date: '2026-08-05',
-    source: 'The Hindu',
-    paperPage: 'Page 8 Law & Constitution',
-    category: 'Polity',
-    summary: 'A Constitution Bench ruled that the Right to Property under Article 300A is a constitutional & human right, requiring fair compensation and statutory process before deprivation.',
-    detailedContent: `In a landmark judgment, a five-judge Constitution Bench reaffirmed that although the Right to Property ceased to be a Fundamental Right via the 44th Constitutional Amendment Act, 1978, it remains a constitutional and fundamental human right under Article 300A.
+    id: 'ca-eco-4',
+    title: '54th GST Council Meeting: Key Decisions on Insurance & Trade Facilitation',
+    date: '2026-08-06',
+    source: 'PIB',
+    paperPage: 'PIB Financial Release',
+    category: 'Economy',
+    summary: 'The GST Council chaired by the Union Finance Minister constituted a Group of Ministers (GoM) to examine GST reduction on life & health insurance premiums and rationalized rates on research grants.',
+    detailedContent: `The 54th meeting of the Goods and Services Tax (GST) Council was held in New Delhi, chaired by Union Minister for Finance and Corporate Affairs.
 
-The Court held that:
-1. No citizen can be deprived of property save by authority of law.
-2. The term 'law' under Article 300A means a valid legislative enactment, not mere executive orders or administrative guidelines.
-3. Adequate compensation and a fair procedural process are implicit requirements under Article 300A.`,
-    whyItMatters: 'Reinforces constitutional safeguards against arbitrary state land acquisition and clarifies the hierarchy between Fundamental Rights and Constitutional Rights.',
+#### Major Decisions:
+1. **Insurance Premiums:** Formation of a dedicated GoM to submit recommendations on rationalizing GST rates on health and life insurance.
+2. **R&D Grants Exemption:** Exempted government and university research grants from GST liability, stimulating academic innovation.
+3. **B2C E-Invoicing Pilot:** Approved pilot rollout of voluntary B2C electronic invoicing to enhance consumer verification.`,
+    whyItMatters: 'Direct impact on fiscal federalism (Article 279A), taxation of social goods, and Ease of Doing Business.',
     examRelevance: [
-      { exam: 'UPSC CSE', relevance: 'GS Paper 2: Indian Constitution, Fundamental Rights vs Legal Rights, Landmark Judgments.' },
-      { exam: 'SSC CGL', relevance: 'Polity: 44th Amendment Act 1978, Constitutional Articles.' }
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Indian Economy, Indirect Taxes, GST Council, Fiscal Federalism (Article 279A).' },
+      { exam: 'SSC CGL / Banking', relevance: 'Financial Awareness: GST structure, Article 279A, Council composition.' }
     ],
     keyFacts: [
-      'Original Status: Fundamental Right under Article 19(1)(f) & Article 31',
-      '44th Amendment Act, 1978 moved Right to Property to Part XII, Chapter IV, Article 300A',
-      'Current Status: Constitutional / Legal Right'
+      'Constitutional Article: Article 279A (101st Constitutional Amendment Act, 2016)',
+      'Chairperson: Union Finance Minister',
+      'Voting Weightage: Centre 1/3rd, States combined 2/3rd (75% majority needed for decisions)'
     ],
-    keywords: ['Article 300A', '44th Amendment 1978', 'Right to Property', 'Land Acquisition', 'Constitution Bench'],
+    keywords: ['GST Council', 'Article 279A', '101st Amendment', 'Health Insurance GST', 'Fiscal Federalism'],
     possibleMCQs: [
       {
-        question: 'Which constitutional amendment removed the Right to Property from the list of Fundamental Rights?',
-        options: ['42nd Amendment Act, 1976', '44th Amendment Act, 1978', '73rd Amendment Act, 1992', '86th Amendment Act, 2002'],
+        question: 'Under which Article of the Indian Constitution is the GST Council constituted?',
+        options: ['Article 269A', 'Article 279A', 'Article 280', 'Article 300A'],
         correctIndex: 1,
-        explanation: 'The 44th Constitutional Amendment Act of 1978 omitted Article 19(1)(f) and Article 31, creating Article 300A.'
+        explanation: 'Article 279A was inserted by the 101st Constitutional Amendment Act, 2016 to constitute the GST Council.'
+      }
+    ],
+    sources: [{ name: 'PIB Finance', url: 'https://pib.gov.in', date: '2026-08-06' }],
+    readTime: '3 min read'
+  },
+
+  // 3. SCIENCE & TECHNOLOGY
+  {
+    id: 'ca-pib-1',
+    title: 'India Semiconductor Mission 2.0 Launched with ₹85,000 Crore Allocation',
+    date: '2026-08-10',
+    source: 'PIB',
+    paperPage: 'PIB Release & National Dailies',
+    category: 'Science & Tech',
+    summary: 'The Cabinet approved Phase 2 of the India Semiconductor Mission (ISM 2.0) focusing on domestic commercial chip fabrication, silicon photonics, and advanced packaging ecosystems.',
+    detailedContent: `The Union Cabinet chaired by the Prime Minister has formally launched Phase 2 of the India Semiconductor Mission (ISM 2.0) with an expanded outlay of ₹85,000 crore. Building upon ISM 1.0 which saw groundbreakings in Gujarat and Assam, ISM 2.0 prioritizes:
+
+1. End-to-end silicon wafer manufacturing and compound semiconductor fabs.
+2. Design Linked Incentive (DLI) 2.0 supporting 50+ domestic semiconductor startups.
+3. R&D cluster development at IIT Madras and IISc Bangalore for next-generation gallium nitride (GaN) and silicon photonics chips.
+4. Setting up of National Semiconductor Talent Hub to train 100,000 specialized engineers over 5 years.
+
+This mission aligns with India's goal to become a global chip manufacturing alternative in the global electronics supply chain.`,
+    whyItMatters: 'Strategic autonomy in critical electronic hardware, reduction in import dependencies ($30B+ annually), and boosting high-tech electronics export manufacturing.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Science & Technology, Indigenization of Tech, Infrastructure Development, Government Schemes.' },
+      { exam: 'SSC CGL', relevance: 'General Awareness: Outlay amount, launching ministry, full forms, tech hubs.' },
+      { exam: 'IBPS PO', relevance: 'Banking & Financial Awareness: Financial outlays, DLI scheme, industrial credit growth.' }
+    ],
+    keyFacts: [
+      'Total ISM 2.0 Outlay: ₹85,000 Crore',
+      'Nodal Ministry: Ministry of Electronics and Information Technology (MeitY)',
+      'Target Talent: 100,000 semiconductor engineers trained by 2030',
+      'Focus Fabs: Compound Semiconductors, OSAT, Silicon Photonics'
+    ],
+    keywords: ['Semiconductor', 'MeitY', 'DLI Scheme', 'Fab', 'OSAT', 'Gallium Nitride', 'Wafer'],
+    possibleMCQs: [
+      {
+        question: 'Which ministry is the nodal agency for executing the India Semiconductor Mission (ISM)?',
+        options: ['Ministry of Commerce and Industry', 'Ministry of Electronics & Information Technology (MeitY)', 'Ministry of Science & Technology', 'NITI Aayog'],
+        correctIndex: 1,
+        explanation: 'ISM is executed by the Digital India Corporation under MeitY.'
       }
     ],
     sources: [
-      { name: 'Supreme Court of India Judgments', url: 'https://main.sci.gov.in', date: '2026-08-05' }
+      { name: 'Press Information Bureau (PIB)', url: 'https://pib.gov.in', date: '2026-08-10' },
+      { name: 'MeitY Official Portal', url: 'https://meity.gov.in', date: '2026-08-10' }
     ],
+    readTime: '4 min read'
+  },
+  {
+    id: 'ca-isro-4',
+    title: 'ISRO Successfully Concludes Gaganyaan Sea Recovery & Parachute Deceleration Trials',
+    date: '2026-08-04',
+    source: 'The Hindu',
+    paperPage: 'Page 11 Science & Technology',
+    category: 'Science & Tech',
+    summary: 'ISRO and the Indian Navy successfully completed the final phase of integrated crew module splashdown and sea recovery trials in the Bay of Bengal ahead of the uncrewed Gaganyaan-1 flight.',
+    detailedContent: `The Indian Space Research Organisation (ISRO), in collaboration with the Indian Navy, executed the crucial integrated parachute and water landing recovery validation tests for the Gaganyaan Human Spaceflight Mission off the coast of Visakhapatnam.
+
+#### Highlights of the Trials:
+1. **Ablative Thermal Protection Test:** Evaluated heat shield resilience upon simulated atmospheric reentry.
+2. **Apex Cover Separation & Drogue Parachute Deployment:** Verified sequenced deployment of supersonic apex covers and dual drogue parachutes slowing descent velocity to under 8.5 m/s.
+3. **Navy Dive Team Protocol:** Indian Navy Eastern Naval Command divers attached the flotation collar and hoisted the mock crew module onto INS Shivalik within 22 minutes.`,
+    whyItMatters: 'Demonstrates India\'s indigenous capability to safely return human astronauts from low-earth orbit (400 km), placing India in an elite club of spacefaring nations.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Science & Tech, Space Exploration, ISRO Missions (Gaganyaan, Chandrayaan, Aditya-L1).' },
+      { exam: 'Defence / CDS', relevance: 'Naval Operations & Inter-agency Joint Recovery Protocols.' }
+    ],
+    keyFacts: [
+      'Target Orbit: Low Earth Orbit (LEO) at ~400 km altitude',
+      'Launch Vehicle: LVM3 (Human Rated Launch Vehicle - HLVM3)',
+      'Primary Recovery Partner: Indian Navy Eastern & Western Naval Commands'
+    ],
+    keywords: ['ISRO', 'Gaganyaan', 'LVM3', 'Human Spaceflight', 'Indian Navy', 'Ablative Shield'],
+    possibleMCQs: [
+      {
+        question: 'Which launch vehicle has been human-rated by ISRO to launch the Gaganyaan crew module into space?',
+        options: ['PSLV-XL', 'GSLV Mk II', 'HLVM3 (Human Rated LVM3)', 'SSLV-D2'],
+        correctIndex: 2,
+        explanation: 'ISRO developed the HLVM3 (Human Rated Launch Vehicle Mark 3) specifically for the Gaganyaan mission.'
+      }
+    ],
+    sources: [{ name: 'ISRO Official', url: 'https://isro.gov.in', date: '2026-08-04' }],
+    readTime: '4 min read'
+  },
+  {
+    id: 'ca-tech-3',
+    title: 'National Quantum Mission Approves 4 Thematic Technology Hubs (T-Hubs)',
+    date: '2026-08-01',
+    source: 'The Hindu',
+    paperPage: 'Page 12 Science & Technology',
+    category: 'Science & Tech',
+    summary: 'The Department of Science and Technology (DST) approved four Thematic Hubs (T-Hubs) under the ₹6,003 crore National Quantum Mission to develop quantum computers, quantum communication, and sensors.',
+    detailedContent: `Under the National Quantum Mission (NQM), DST established four dedicated Thematic Hubs (T-Hubs) across premier institutes:
+
+1. **Quantum Computing:** IISc Bangalore & TIFR Mumbai.
+2. **Quantum Communication:** IIT Madras & C-DOT.
+3. **Quantum Sensing & Metrology:** IIT Bombay & NPL Delhi.
+4. **Quantum Materials & Devices:** IIT Delhi & S.N. Bose National Centre for Basic Sciences.
+
+The mission targets 50-1000 physical qubits in quantum computers within 8 years and satellite-based secure quantum key distribution (QKD) over 2,000 km.`,
+    whyItMatters: 'Critical for cryptography, national cyber security, drug discovery, and next-generation computing supremacy.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Science & Technology, Quantum Computing, NQM, Cryptography.' },
+      { exam: 'General Awareness', relevance: 'NQM budget (₹6,003 Cr), 4 verticals, nodal department (DST).' }
+    ],
+    keyFacts: [
+      'Total Budget: ₹6,003.65 Crore (2023-2031)',
+      'Nodal Department: Department of Science & Technology (DST)',
+      'Key Targets: 50-1000 qubits quantum computing systems'
+    ],
+    keywords: ['National Quantum Mission', 'Qubits', 'QKD', 'Quantum Cryptography', 'DST'],
+    possibleMCQs: [
+      {
+        question: 'What is the basic unit of information in quantum computing analogous to a classical bit?',
+        options: ['Byte', 'Qubit (Quantum Bit)', 'Phonon', 'Fermion'],
+        correctIndex: 1,
+        explanation: 'A qubit (quantum bit) is the basic unit of quantum information, capable of existing in a superposition of states.'
+      }
+    ],
+    sources: [{ name: 'DST Release', url: 'https://dst.gov.in', date: '2026-08-01' }],
     readTime: '3 min read'
+  },
+
+  // 4. ENVIRONMENT & ECOLOGY
+  {
+    id: 'ca-gib-6',
+    title: 'Supreme Court Expert Panel Submits Protocol for Great Indian Bustard (GIB) Habitat Protection',
+    date: '2026-08-02',
+    source: 'The Hindu',
+    paperPage: 'Page 7 Environment & Ecology',
+    category: 'Environment',
+    summary: 'The Supreme Court expert committee balanced renewable solar corridor transmission with underground cabling mandates in core GIB priority habitats across the Thar Desert.',
+    detailedContent: `A technical expert panel appointed by the Supreme Court of India in *MK Ranjitsinh v. Union of India* submitted its comprehensive zoning framework to protect the critically endangered Great Indian Bustard (GIB / Ardeotis nigriceps).
+
+#### Key Recommendations:
+1. **Core Priority Zone (3,163 sq km):** 100% mandatory underground cabling for all overhead high-voltage power lines.
+2. **Potential Zone (20,000+ sq km):** Installation of high-visibility bird flight diverters certified by the Wildlife Institute of India (WII).
+3. **Predator-proof Enclosures:** Expanding captive breeding centers at Sam (Jaisalmer) and Ramdevra.`,
+    whyItMatters: 'Balances India\'s ambitious green energy transition (solar park power transmission) with constitutional wildlife preservation duties (Article 48A & 51A(g)).',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Biodiversity Conservation, IUCN Red List status, Endangered Species, Environmental Jurisprudence.' },
+      { exam: 'State PCS', relevance: 'State Animals: Great Indian Bustard is the State Bird of Rajasthan.' }
+    ],
+    keyFacts: [
+      'IUCN Status: Critically Endangered (CR)',
+      'Wildlife Protection Act 1972: Schedule I (Highest protection)',
+      'CITES Listing: Appendix I',
+      'Wild Population: Less than 150 individuals remaining in the wild'
+    ],
+    keywords: ['Great Indian Bustard', 'GIB', 'IUCN Critically Endangered', 'Thar Desert', 'Wildlife Institute of India'],
+    possibleMCQs: [
+      {
+        question: 'What is the IUCN Red List conservation status of the Great Indian Bustard (Ardeotis nigriceps)?',
+        options: ['Vulnerable', 'Endangered', 'Critically Endangered', 'Near Threatened'],
+        correctIndex: 2,
+        explanation: 'The Great Indian Bustard is categorized as Critically Endangered (CR) on the IUCN Red List.'
+      }
+    ],
+    sources: [{ name: 'The Hindu', url: 'https://thehindu.com', date: '2026-08-02' }],
+    readTime: '4 min read'
+  },
+  {
+    id: 'ca-env-2',
+    title: 'India Adds 3 New Wetlands to Ramsar List, Taking National Total to 85 Sites',
+    date: '2026-07-30',
+    source: 'PIB',
+    paperPage: 'PIB Environment',
+    category: 'Environment',
+    summary: 'The Ministry of Environment, Forest and Climate Change announced the designation of three new Ramsar sites in India, reinforcing wetland ecological preservation and migratory flyway conservation.',
+    detailedContent: `On the eve of World Nature Conservation Day, India added three more wetlands to the Ramsar List of Wetlands of International Importance, taking the nationwide tally to 85.
+
+#### Newly Designated Sites:
+1. **Nanjarayan Bird Sanctuary (Tamil Nadu):** Crucial foraging site for migratory waterfowl along the Central Asian Flyway (CAF).
+2. **Kazhuveli Bird Sanctuary (Tamil Nadu):** A major brackish water wetland connected to the Bay of Bengal.
+3. **Tawa Reservoir (Madhya Pradesh):** Situated inside Satpura Tiger Reserve, providing aquatic refugia for bar-headed geese and osprey.
+
+Tamil Nadu leads Indian states with the highest number of Ramsar sites (18), followed by Uttar Pradesh (10).`,
+    whyItMatters: 'Preserves critical freshwater biodiversity, flood mitigation buffers, and international obligations under the Ramsar Convention on Wetlands (1971).',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Wetlands, Ramsar Convention 1971, Montreux Record, Central Asian Flyway.' },
+      { exam: 'SSC CGL / State PCS', relevance: 'General Awareness: Total Ramsar sites in India (85), highest state (Tamil Nadu).' }
+    ],
+    keyFacts: [
+      'Total Ramsar Sites in India: 85 Sites (as of 2026)',
+      'State with Highest Sites: Tamil Nadu (18 sites)',
+      'Ramsar Convention Signed: 2 February 1971 in Ramsar, Iran'
+    ],
+    keywords: ['Ramsar Sites', 'Wetlands', 'Tamil Nadu', 'Central Asian Flyway', 'MoEFCC'],
+    possibleMCQs: [
+      {
+        question: 'Which Indian state has the highest number of Ramsar designated wetlands?',
+        options: ['Uttar Pradesh', 'Tamil Nadu', 'Kerala', 'Odisha'],
+        correctIndex: 1,
+        explanation: 'Tamil Nadu has the highest number of Ramsar sites in India (18 sites).'
+      }
+    ],
+    sources: [{ name: 'PIB MoEFCC', url: 'https://pib.gov.in', date: '2026-07-30' }],
+    readTime: '3 min read'
+  },
+
+  // 5. GOVERNMENT SCHEMES & PUBLIC POLICY
+  {
+    id: 'ca-solar-5',
+    title: 'PM Surya Ghar Muft Bijli Yojana Crosses 13 Million Beneficiary Registrations',
+    date: '2026-08-03',
+    source: 'PIB',
+    paperPage: 'PIB National Headline',
+    category: 'Government Schemes',
+    summary: 'The Ministry of New and Renewable Energy announced that the PM Surya Ghar Muft Bijli Yojana has surpassed 13 million household registrations, offering up to 300 units of free electricity monthly.',
+    detailedContent: `The PM Surya Ghar: Muft Bijli Yojana, launched with a total outlay of ₹75,021 crore, aims to provide free solar electricity to 1 crore (10 million) households in India.
+
+#### Key Scheme Features:
+1. **Direct Subsidy Support:**
+   - 2 kW system: ₹60,000 subsidy (covers ~60% of installation cost).
+   - 3 kW system: ₹78,000 max central subsidy.
+2. **Net Metering & Grid Sellback:** Surplus electricity generated can be sold back to state DISCOMs via bi-directional smart meters.
+3. **Model Solar Villages:** 1 Model Solar Village per district receiving ₹1 crore dedicated development grant.`,
+    whyItMatters: 'Accelerates India\'s COP pledge of 500 GW non-fossil capacity by 2030 while reducing household electricity expenditures.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Renewable Energy, Climate Change mitigation, DISCOM health, PM Surya Ghar.' },
+      { exam: 'State PCS', relevance: 'Government Schemes: Subsidy amounts, eligibility, MNRE guidelines.' }
+    ],
+    keyFacts: [
+      'Total Financial Outlay: ₹75,021 Crore',
+      'Target Households: 10 Million (1 Crore)',
+      'Free Power Cap: Up to 300 units per month per household'
+    ],
+    keywords: ['PM Surya Ghar', 'Rooftop Solar', 'MNRE', 'Renewable Energy', 'DISCOM', 'Net Metering'],
+    possibleMCQs: [
+      {
+        question: 'What is the maximum central financial assistance (subsidy) provided under PM Surya Ghar Muft Bijli Yojana for a 3 kW rooftop solar plant?',
+        options: ['₹30,000', '₹50,000', '₹78,000', '₹1,00,000'],
+        correctIndex: 2,
+        explanation: 'Under PM Surya Ghar scheme, the maximum subsidy for a 3 kW or higher residential rooftop solar system is capped at ₹78,000.'
+      }
+    ],
+    sources: [{ name: 'PIB MNRE Release', url: 'https://pib.gov.in', date: '2026-08-03' }],
+    readTime: '3 min read'
+  },
+  {
+    id: 'ca-sch-2',
+    title: 'Union Cabinet Approves Ayushman Bharat PM-JAY Expansion to All Senior Citizens Aged 70+',
+    date: '2026-07-28',
+    source: 'Times of India',
+    paperPage: 'Page 1 National Policy',
+    category: 'Government Schemes',
+    summary: 'The Union Cabinet expanded the Ayushman Bharat Pradhan Mantri Jan Arogya Yojana (AB PM-JAY) to provide ₹5 lakh annual free health insurance coverage to all senior citizens aged 70 and above, regardless of income.',
+    detailedContent: `The Union Cabinet chaired by the Prime Minister approved the universal health cover expansion under AB PM-JAY for all senior citizens aged 70 years and above.
+
+#### Salient Highlights:
+1. **Universal Eligibility:** No income criteria or socioeconomic status cut-offs; every Indian senior citizen aged 70+ qualifies.
+2. **Dedicated Card:** Eligible beneficiaries receive a distinct Ayushman Vay Vandana Card.
+3. **Top-Up Cover:** Senior citizens in families already covered under PM-JAY will get an additional top-up cover of ₹5 lakh per year exclusively for themselves.`,
+    whyItMatters: 'Massive social security safety net addressing India\'s ageing demographic profile and reducing out-of-pocket health expenditures.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 2: Issues relating to Health, Social Security, Welfare schemes for vulnerable sections.' },
+      { exam: 'Banking / SSC', relevance: 'General Awareness: Outlay, age criteria (70+), coverage amount (₹5 Lakh).' }
+    ],
+    keyFacts: [
+      'Coverage Amount: ₹5 Lakh per family/individual per annum',
+      'Target Age Group: All senior citizens aged 70 years and above',
+      'Implementing Agency: National Health Authority (NHA)'
+    ],
+    keywords: ['Ayushman Bharat', 'PM-JAY', 'Senior Citizens 70+', 'NHA', 'Health Insurance'],
+    possibleMCQs: [
+      {
+        question: 'Which statutory/attached body is the apex implementing agency for the Ayushman Bharat PM-JAY scheme in India?',
+        options: ['Medical Council of India', 'National Health Authority (NHA)', 'AIIMS New Delhi', 'NITI Aayog'],
+        correctIndex: 1,
+        explanation: 'The National Health Authority (NHA) is the apex agency responsible for implementing Ayushman Bharat PM-JAY.'
+      }
+    ],
+    sources: [{ name: 'Times of India', url: 'https://timesofindia.indiatimes.com', date: '2026-07-28' }],
+    readTime: '3 min read'
+  },
+
+  // 6. DEFENCE & SECURITY
+  {
+    id: 'ca-def-1',
+    title: 'Commissioning of INS Arighat: Strengthening India\'s Second-Strike Nuclear Submarine Fleet',
+    date: '2026-07-25',
+    source: 'The Hindu',
+    paperPage: 'Page 1 & 9 Defence & Strategic Affairs',
+    category: 'Defence',
+    summary: 'India commissioned its second indigenous nuclear-powered ballistic missile submarine (SSBN) INS Arighat at Visakhapatnam, bolstering India\'s survivable nuclear triad second-strike capability.',
+    detailedContent: `Defence Minister Rajnath Singh formally commissioned INS Arighat (S3), India's second Arihant-class nuclear-powered submarine, into the Indian Navy at the Ship Building Centre (SBC) in Visakhapatnam.
+
+#### Strategic Capabilities:
+1. **Nuclear Propulsion:** Powered by an indigenous 83 MW pressurized light-water reactor (PWR) enriched with uranium.
+2. **Armament:** Equipped with K-15 Sagarika submarine-launched ballistic missiles (SLBMs) with a range of 750 km and capable of carrying K-4 SLBMs (3,500 km range).
+3. **Nuclear Triad Pillar:** Solidifies India's "No First Use" (NFU) nuclear doctrine by guaranteeing an invulnerable, undetected second-strike capability underwater.`,
+    whyItMatters: 'Transforms India into one of only six nations capable of building and operating SSBNs, essential for maritime deterrence in the Indo-Pacific.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 3: Security challenges, Nuclear Doctrine, Indigenization of Defence technology, INS Arighat.' },
+      { exam: 'Defence Exams (CDS/AFCAT/NDA)', relevance: 'Naval assets, SSBN class, SLBM ranges (K-15, K-4).' }
+    ],
+    keyFacts: [
+      'Vessel Class: Arihant-Class SSBN (Nuclear-Powered Ballistic Missile Submarine)',
+      'Primary Weapons: K-15 (750 km) & K-4 (3,500 km) SLBMs',
+      'Construction Yard: Ship Building Centre, Visakhapatnam'
+    ],
+    keywords: ['INS Arighat', 'INS Arihant', 'SSBN', 'Nuclear Triad', 'K-15 SLBM', 'Indian Navy'],
+    possibleMCQs: [
+      {
+        question: 'What type of naval vessel is INS Arighat, recently commissioned by the Indian Navy?',
+        options: ['Aircraft Carrier', 'Nuclear-powered Ballistic Missile Submarine (SSBN)', 'Guided Missile Destroyer', 'Stealth Frigate'],
+        correctIndex: 1,
+        explanation: 'INS Arighat is India\'s second nuclear-powered ballistic missile submarine (SSBN).'
+      }
+    ],
+    sources: [{ name: 'The Hindu Defence', url: 'https://thehindu.com', date: '2026-07-25' }],
+    readTime: '4 min read'
+  },
+
+  // 7. CULTURE, SPORTS & AWARDS
+  {
+    id: 'ca-cul-1',
+    title: 'UNESCO Inscribes "Moidams - The Mound-Burial System of the Ahom Dynasty" as World Heritage Site',
+    date: '2026-07-22',
+    source: 'The Hindu',
+    paperPage: 'Page 10 Culture & Heritage',
+    category: 'Awards',
+    summary: 'The 46th session of the World Heritage Committee inscribed the historic Moidams of Charaideo in Assam as India\'s 43rd UNESCO World Heritage Site, the first cultural heritage site from North East India.',
+    detailedContent: `At the 46th World Heritage Committee session hosted in New Delhi, the Moidams of Charaideo (Assam) were formally inscribed on the UNESCO World Heritage List under the Cultural category.
+
+#### Historical & Architectural Features:
+1. **Ahom Royal Tumuli:** Moidams are vaulted brick and stone mound burial chambers of Tai-Ahom kings and queens spanning 600 years (13th to 19th centuries).
+2. **Comparison with Pyramids:** Often referred to as the 'Pyramids of Assam', reflecting unique ancestral veneration and landscape architecture.
+3. **Significance:** First Cultural World Heritage site from Northeast India (Kaziranga and Manas are Natural sites).`,
+    whyItMatters: 'Celebrates Ahom dynasty history, architectural legacy, and broadens cultural representation in national competitive exams.',
+    examRelevance: [
+      { exam: 'UPSC CSE', relevance: 'GS Paper 1: Indian Culture, Architecture of Ahom Kingdom, UNESCO World Heritage Sites in India.' },
+      { exam: 'State PCS & SSC', relevance: 'History & Culture: Charaideo location, Ahom dynasty, 43rd World Heritage site.' }
+    ],
+    keyFacts: [
+      'UNESCO Site Number in India: 43rd Site',
+      'Location: Charaideo, Assam (First capital of Ahom Kingdom established by Chao Lung Siu-Ka-Pha in 1253)',
+      'Category: Cultural World Heritage Site'
+    ],
+    keywords: ['Moidams', 'Ahom Dynasty', 'Charaideo', 'UNESCO World Heritage', 'Assam'],
+    possibleMCQs: [
+      {
+        question: 'The Moidams, recently inscribed on the UNESCO World Heritage list, belong to which historic Indian dynasty?',
+        options: ['Gupta Dynasty', 'Ahom Dynasty', 'Chola Dynasty', 'Maurya Dynasty'],
+        correctIndex: 1,
+        explanation: 'Moidams are the mound-burial royal tumuli of the Ahom Dynasty situated in Charaideo, Assam.'
+      }
+    ],
+    sources: [{ name: 'The Hindu Culture', url: 'https://thehindu.com', date: '2026-07-22' }],
+    readTime: '3 min read'
+  }
+];
+
+export const SAMPLE_WORLD_NEWS: WorldNewsItem[] = [
+  {
+    id: 'wn-1',
+    title: 'UN Security Council Resolution 2722 on Red Sea Transit & Maritime Freedom of Navigation',
+    date: '2026-08-11',
+    region: 'Middle East & Africa',
+    country: 'Red Sea / Yemen / Global Waters',
+    sourceName: 'Reuters',
+    sourceUrl: 'https://www.reuters.com/world/middle-east/',
+    summary: 'UN Security Council passes resolution demanding immediate cessation of commercial ship attacks in the Bab-el-Mandeb Strait, emphasizing international maritime law and supply chain protection.',
+    detailedAnalysis: `### Global Strategic Chokepoints & International Maritime Law
+The United Nations Security Council formally adopted Resolution 2722 with 11 votes in favor and 4 abstentions.
+
+#### Core Strategic Implications:
+1. **Bab-el-Mandeb Chokepoint:** Over 12% of global seaborne commerce and 30% of global container traffic transits through the Bab-el-Mandeb strait between Yemen and Djibouti.
+2. **Cape of Good Hope Rerouting:** Maritime carriers rerouting vessels around southern Africa face an extra 3,500 nautical miles (10-14 transit days) and added bunker fuel costs.
+3. **Freight & Insurance Surcharges:** War risk insurance premiums surged from 0.05% to over 1.0% of vessel value.`,
+    geopoliticalImpact: 'Heightens global inflation risk for containerized consumer goods and alters naval coalition deployments in the Gulf of Aden.',
+    indiaRelevance: 'Vital for India\'s $200B+ annual trade with Europe and North America; Indian Navy has deployed frontline destroyers and guided-missile frigates in the North Arabian Sea for merchant vessel escort.',
+    keyFacts: [
+      'Key Chokepoint: Bab-el-Mandeb Strait (width: 29 km at narrowest point)',
+      'UN Resolution: UNSC Res 2722 (2024)',
+      'Governing Maritime Convention: UNCLOS (UN Convention on the Law of the Sea, 1982)'
+    ],
+    keyOrganizations: ['UN Security Council', 'IMO', 'Indian Navy', 'Combined Maritime Forces (CMF)'],
+    possibleMCQs: [
+      {
+        question: 'Which strait connects the Red Sea to the Gulf of Aden?',
+        options: ['Strait of Hormuz', 'Bab-el-Mandeb Strait', 'Malacca Strait', 'Bosphorus Strait'],
+        correctIndex: 1,
+        explanation: 'The Bab-el-Mandeb Strait connects the Red Sea to the Gulf of Aden and the Indian Ocean.'
+      }
+    ],
+    readTime: '4 min read'
+  },
+  {
+    id: 'wn-2',
+    title: 'G20 Global AI Governance Accord: International Framework on Safety & Open Compute',
+    date: '2026-08-10',
+    region: 'Climate & Tech',
+    country: 'Global Governance / G20 Member States',
+    sourceName: 'BBC World',
+    sourceUrl: 'https://www.bbc.com/news/technology',
+    summary: 'G20 digital economy leaders adopt landmark harmonized principles for ethical artificial intelligence, deepfake provenance watermarks, and open compute access for emerging economies.',
+    detailedAnalysis: `### Multilateral Artificial Intelligence Governance
+Following high-level ministerial meetings, the G20 released its Comprehensive Blueprint for Trustworthy and Responsible Frontier AI.
+
+#### Pillars of the Accord:
+1. **Universal Synthetic Media Standards:** Mandatory cryptographic watermarking for AI-generated images, video, and audio to counter electoral misinformation.
+2. **Frontier Model Safety Thresholds:** Standardized red-teaming evaluations for neural networks requiring compute exceeding 10^26 FLOPs.
+3. **Global South Compute Democratization:** Creating a multilateral high-performance compute exchange under the Global Partnership on Artificial Intelligence (GPAI).`,
+    geopoliticalImpact: 'Harmonizes tech regulatory frameworks between the European Union AI Act, United States Executive Orders, and India\'s Digital India Act.',
+    indiaRelevance: 'Directly aligns with India\'s ₹10,372 crore IndiaAI Mission and India\'s leadership in the GPAI steering council.',
+    keyFacts: [
+      'Governing Accord: G20 Digital Economy Working Group Consensus',
+      'Compute Threshold: 10^26 Floating Point Operations (FLOPs)',
+      'Secretariat / Partner: GPAI & UNESCO Ethics of AI Framework'
+    ],
+    keyOrganizations: ['G20', 'GPAI', 'UNESCO', 'OECD', 'IndiaAI'],
+    possibleMCQs: [
+      {
+        question: 'Where is the permanent headquarters of the OECD located?',
+        options: ['Geneva, Switzerland', 'Paris, France', 'Brussels, Belgium', 'Vienna, Austria'],
+        correctIndex: 1,
+        explanation: 'The Organisation for Economic Co-operation and Development (OECD) is headquartered in Paris, France.'
+      }
+    ],
+    readTime: '5 min read'
+  },
+  {
+    id: 'wn-3',
+    title: 'Quad Foreign Ministers Summit Pledges Expanded Indo-Pacific Maritime Domain Awareness (IPMDA)',
+    date: '2026-08-09',
+    region: 'Asia-Pacific',
+    country: 'India, USA, Japan, Australia',
+    sourceName: 'The Hindu World',
+    sourceUrl: 'https://www.thehindu.com/news/international/',
+    summary: 'Foreign ministers of the Quad (India, US, Japan, Australia) expand real-time satellite data sharing under IPMDA to combat illegal fishing, maritime piracy, and natural disaster relief.',
+    detailedAnalysis: `### Indo-Pacific Security & Maritime Domain Strategy
+The Quadrilateral Security Dialogue (Quad) convened its annual ministerial dialogue, reinforcing their collective commitment to a "Free, Open, and Inclusive Indo-Pacific."
+
+#### Strategic Deliverables:
+1. **IPMDA Phase 2:** Integration of commercial low-earth-orbit radio frequency satellites to track 'dark vessels' (ships turning off AIS transponders).
+2. **Quad Infrastructure Fellowship:** Funding 1,800 STEM scholarships across ASEAN and Pacific Island Countries.
+3. **Open RAN 5G Telecommunications:** Joint pilot deployment of secure open radio access networks across the South Pacific.`,
+    geopoliticalImpact: 'Strengthens maritime surveillance and rules-based international order across the South China Sea and Indian Ocean Region (IOR).',
+    indiaRelevance: 'Core anchor of India\'s SAGAR (Security and Growth for All in the Region) doctrine and Information Fusion Centre - Indian Ocean Region (IFC-IOR) located in Gurugram.',
+    keyFacts: [
+      'Quad Members: India, United States, Japan, Australia',
+      'Initiative: Indo-Pacific Maritime Domain Awareness (IPMDA)',
+      'Indian Hub: IFC-IOR (Information Fusion Centre - Indian Ocean Region)'
+    ],
+    keyOrganizations: ['Quad', 'ASEAN', 'Pacific Islands Forum', 'IFC-IOR'],
+    possibleMCQs: [
+      {
+        question: 'Where is India\'s Information Fusion Centre for Indian Ocean Region (IFC-IOR) located?',
+        options: ['Kochi, Kerala', 'Gurugram, Haryana', 'Visakhapatnam, Andhra Pradesh', 'Port Blair, Andaman & Nicobar'],
+        correctIndex: 1,
+        explanation: 'The IFC-IOR was established by the Indian Navy in 2018 in Gurugram, Haryana.'
+      }
+    ],
+    readTime: '4 min read'
+  },
+  {
+    id: 'wn-4',
+    title: 'European Union CBAM Phase-2: Carbon Border Tax Enforcement on Steel & Aluminum',
+    date: '2026-08-08',
+    region: 'Europe',
+    country: 'European Union / Global Exporters',
+    sourceName: 'Financial Times',
+    sourceUrl: 'https://www.ft.com/global-economy',
+    summary: 'The European Union transitions the Carbon Border Adjustment Mechanism (CBAM) into mandatory tariff compliance, requiring importers of steel, cement, fertilizers, and aluminum to purchase carbon certificates.',
+    detailedAnalysis: `### International Trade & Carbon Border Tariffs
+The European Commission entered the definitive enforcement stage of the Carbon Border Adjustment Mechanism (CBAM), designed to equalize the carbon price paid by domestic EU manufacturers and foreign exporters.
+
+#### Key Economic Mechanisms:
+1. **Scope of Sectors:** Iron & Steel, Aluminum, Cement, Fertilizers, Electricity, and Hydrogen.
+2. **Emissions Calculation:** Exporters must declare direct emissions (Scope 1) and embedded electrical emissions (Scope 2) audited by certified bodies.
+3. **WTO Compatibility Debate:** Developing countries argue CBAM violates WTO non-discrimination principles (GATT Article I & III) and Common But Differentiated Responsibilities (CBDR-RC) under the UNFCCC.`,
+    geopoliticalImpact: 'Forces heavy industry decarbonization worldwide but sparks trade friction between Europe and emerging manufacturing giants.',
+    indiaRelevance: 'Impacts approximately $8 Billion of Indian steel and aluminum exports to EU markets; India is negotiating reciprocal emission recognition and exploring domestic carbon tax credits.',
+    keyFacts: [
+      'Full Name: Carbon Border Adjustment Mechanism (CBAM)',
+      'Covered Goods: Steel, Aluminum, Cement, Fertilizer, Hydrogen',
+      'Benchmark: EU Emissions Trading System (EU ETS) carbon price'
+    ],
+    keyOrganizations: ['European Commission', 'WTO', 'UNFCCC', 'Ministry of Commerce India'],
+    possibleMCQs: [
+      {
+        question: 'What is the primary objective of the European Union\'s Carbon Border Adjustment Mechanism (CBAM)?',
+        options: ['Banning all industrial imports into the EU', 'Preventing carbon leakage by equalizing carbon prices on imports', 'Subsidizing coal-fired electricity in Europe', 'Eliminating customs duties on all goods'],
+        correctIndex: 1,
+        explanation: 'CBAM aims to prevent carbon leakage by placing a fair carbon price on imported carbon-intensive goods.'
+      }
+    ],
+    readTime: '5 min read'
+  },
+  {
+    id: 'wn-5',
+    title: 'International Court of Justice (ICJ) Convenes Hearings on State Climate Change Obligations',
+    date: '2026-08-07',
+    region: 'Global Economy',
+    country: 'The Hague, Netherlands / UN General Assembly',
+    sourceName: 'Associated Press',
+    sourceUrl: 'https://apnews.com/hub/climate-and-environment',
+    summary: 'The International Court of Justice in The Hague begins historic public hearings on an advisory opinion requested by Vanuatu and the UN General Assembly defining legal obligations of states in tackling climate change.',
+    detailedAnalysis: `### International Law & Climate Change Jurisprudence
+Following a historic resolution initiated by the Pacific Island state of Vanuatu and supported by 130+ nations, the 15-judge bench of the International Court of Justice (ICJ) opened oral proceedings.
+
+#### Core Legal Questions Before the Court:
+1. **State Legal Liability:** What are the obligations of states under international treaties (UNFCCC, Paris Agreement, UNCLOS) to protect climate systems from greenhouse gas emissions?
+2. **Rights of Future Generations:** Legal consequences for states that have historically caused significant harm to island nations and vulnerable populations.`,
+    geopoliticalImpact: 'A landmark advisory opinion could transform domestic climate litigation and international climate finance negotiations.',
+    indiaRelevance: 'India presented its oral submission advocating Common But Differentiated Responsibilities (CBDR), per-capita equity, and the transfer of green technologies.',
+    keyFacts: [
+      'Court Seat: Peace Palace, The Hague, Netherlands',
+      'Initiating State: Republic of Vanuatu',
+      'UN Charter Status: ICJ is the principal judicial organ of the United Nations (Statute of ICJ)'
+    ],
+    keyOrganizations: ['International Court of Justice (ICJ)', 'UNGA', 'UNFCCC', 'AOSIS'],
+    possibleMCQs: [
+      {
+        question: 'Where is the headquarters of the International Court of Justice (ICJ) located?',
+        options: ['Geneva, Switzerland', 'New York, USA', 'The Hague, Netherlands', 'Rome, Italy'],
+        correctIndex: 2,
+        explanation: 'The International Court of Justice (ICJ) has its seat at the Peace Palace in The Hague, Netherlands.'
+      }
+    ],
+    readTime: '4 min read'
   }
 ];
 

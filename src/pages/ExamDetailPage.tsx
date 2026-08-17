@@ -11,7 +11,10 @@ import {
   ArrowLeft,
   Sparkles,
   Layers,
-  HelpCircle
+  HelpCircle,
+  Globe,
+  ExternalLink,
+  ShieldCheck
 } from 'lucide-react';
 
 export const ExamDetailPage: React.FC = () => {
@@ -77,8 +80,20 @@ export const ExamDetailPage: React.FC = () => {
             <span className="font-bold text-blue-400">{exam.upcomingDate}</span>
           </div>
           <div>
-            <span className="text-slate-400 block text-[10px] uppercase font-bold">Qualification</span>
-            <span className="font-bold text-slate-100">{exam.qualification}</span>
+            <span className="text-slate-400 block text-[10px] uppercase font-bold">Official Portal</span>
+            {exam.officialWebsite ? (
+              <a
+                href={exam.officialWebsite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-bold text-emerald-400 hover:text-emerald-300 transition"
+              >
+                <span>{exam.officialWebsiteName ? exam.officialWebsiteName.replace(/.*\((.*?)\)/, '$1') : 'Visit Portal'}</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            ) : (
+              <span className="font-bold text-slate-100">{exam.qualification}</span>
+            )}
           </div>
           <div>
             <span className="text-slate-400 block text-[10px] uppercase font-bold">Competition Ratio</span>
@@ -86,6 +101,43 @@ export const ExamDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Official Government Website Banner */}
+      {exam.officialWebsite && (
+        <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+              <Globe className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                  Government Official Website
+                </span>
+                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-200/80 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300">
+                  <ShieldCheck className="w-2.5 h-2.5" /> Verified
+                </span>
+              </div>
+              <p className="text-sm font-bold text-slate-900 dark:text-white">
+                {exam.officialWebsiteName || `${exam.conductingBody} Official Portal`}
+              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                {exam.officialWebsite}
+              </p>
+            </div>
+          </div>
+
+          <a
+            href={exam.officialWebsite}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition flex items-center gap-2 self-stretch sm:self-auto justify-center"
+          >
+            <span>Open Official Website</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      )}
 
       {/* Tabs Navigation */}
       <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 overflow-x-auto text-xs font-bold">

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Question } from '../types';
-import { CheckSquare, Filter, CheckCircle2, XCircle, ArrowRight, ArrowLeft, Bookmark, RefreshCw, AlertCircle, Sparkles } from 'lucide-react';
+import { 
+  CheckSquare, Filter, CheckCircle2, XCircle, ArrowRight, ArrowLeft, 
+  Bookmark, RefreshCw, AlertCircle, Sparkles, Plus, Lock, ShieldCheck 
+} from 'lucide-react';
 
 export const MCQPracticePage: React.FC = () => {
-  const { questions, selectedExam, addBookmark } = useApp();
+  const { questions, selectedExam, addBookmark, isAdmin, triggerAdminLock, setCurrentPage } = useApp();
 
   const [selectedSubject, setSelectedSubject] = useState<string>('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
@@ -62,15 +65,32 @@ export const MCQPracticePage: React.FC = () => {
     <div className="space-y-8 pb-12">
       
       {/* Header Banner */}
-      <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-800/80 text-blue-300 text-xs font-bold uppercase tracking-wider">
-          <CheckSquare className="w-4 h-4" />
-          <span>Interactive MCQ Practice Engine</span>
+      <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white flex flex-wrap items-center justify-between gap-4 shadow-xl">
+        <div className="space-y-3 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-800/80 text-blue-300 text-xs font-bold uppercase tracking-wider">
+            <CheckSquare className="w-4 h-4" />
+            <span>Interactive MCQ Practice Engine</span>
+          </div>
+          <h1 className="text-2xl md:text-4xl font-black">Practice Subject-Wise Questions</h1>
+          <p className="text-xs md:text-sm text-slate-300">
+            High-yield Prelims MCQs designed to test conceptual clarity with detailed options analysis.
+          </p>
         </div>
-        <h1 className="text-2xl md:text-4xl font-black">Practice Subject-Wise Questions</h1>
-        <p className="text-xs md:text-sm text-slate-300 max-w-2xl">
-          High-yield Prelims MCQs designed to test conceptual clarity with detailed options analysis.
-        </p>
+
+        <button
+          onClick={() => {
+            if (!isAdmin) {
+              triggerAdminLock('Add Practice MCQ');
+            } else {
+              setCurrentPage('admin');
+            }
+          }}
+          className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-lg transition flex items-center gap-2"
+        >
+          <Plus className="w-4 h-4" />
+          <span>+ Add Practice MCQ</span>
+          {!isAdmin ? <Lock className="w-3.5 h-3.5 text-amber-300" /> : <ShieldCheck className="w-3.5 h-3.5 text-blue-200" />}
+        </button>
       </div>
 
       {/* Filter Bar */}

@@ -3,10 +3,11 @@ import { useApp } from '../context/AppContext';
 import { NoteItem } from '../types';
 import { performAINoteAction, generateAITopicNote } from '../services/aiService';
 import { MarkdownView } from '../components/common/MarkdownView';
+import { createFolderInSupabase } from '../lib/supabase';
 import { 
   BookOpenText, Plus, Folder, Sparkles, Trash2, Edit3, Bookmark, Search, 
   RefreshCw, FolderPlus, Download, Copy, Check, FileText, Zap, ChevronRight, 
-  Filter, Layers, CheckCircle2, ArrowRight
+  Filter, Layers, CheckCircle2, ArrowRight, Lock, ShieldCheck
 } from 'lucide-react';
 
 const RECOMMENDED_SYLLABUS_TOPICS: { topic: string; folder: string }[] = [
@@ -62,7 +63,16 @@ const RECOMMENDED_SYLLABUS_TOPICS: { topic: string; folder: string }[] = [
 ];
 
 export const NotesPage: React.FC = () => {
-  const { notes, addNote, updateNote, deleteNote, addFlashcard, user } = useApp();
+  const { 
+    notes, 
+    addNote, 
+    updateNote, 
+    deleteNote, 
+    addFlashcard, 
+    user, 
+    isAdmin, 
+    triggerAdminLock 
+  } = useApp();
 
   const [selectedFolder, setSelectedFolder] = useState<string>('All');
   const [selectedNote, setSelectedNote] = useState<NoteItem | null>(notes[0] || null);
@@ -150,6 +160,11 @@ export const NotesPage: React.FC = () => {
 
   // Handle single AI Note Generation
   const handleGenerateSingleNote = async (topicToGenerate?: string, folderToUse?: string) => {
+    if (!isAdmin) {
+      triggerAdminLock('Generate Topic Note');
+      return;
+    }
+
     const topic = topicToGenerate || aiTopicInput.trim();
     const folder = folderToUse || aiFolderSelect;
 
@@ -189,9 +204,14 @@ export const NotesPage: React.FC = () => {
 
   // Handle Batch Auto-Generation of Topicwise Notes for ALL Topics
   const handleBatchGenerateAllTopics = async () => {
+    if (!isAdmin) {
+      triggerAdminLock('Auto-Generate All Topicwise Notes');
+      return;
+    }
+
     if (isBatchGenerating) return;
 
-    if (!window.confirm('This will automatically generate structured AI Digital Notes for ALL core syllabus topics across all subject folders. Continue?')) {
+    if (!window.confirm('This will automatically generate structured AI Digital Notes for ALL core syllabus topics across all subject folders and sync to backend. Continue?')) {
       return;
     }
 
@@ -224,18 +244,26 @@ export const NotesPage: React.FC = () => {
     }
 
     setIsBatchGenerating(false);
-    alert(`Successfully generated and added ${addedCount} AI Digital Notes into subject folders!`);
+    alert(`Successfully generated and added ${addedCount} AI Digital Notes into subject folders & Supabase backend!`);
   };
 
   // Handle Adding New Digital Folder
   const handleAddFolder = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAdmin) {
+      triggerAdminLock('Create Digital Folder');
+      return;
+    }
+
     if (!newFolderNameInput.trim()) return;
 
     const trimmed = newFolderNameInput.trim();
     if (!customFolders.includes(trimmed)) {
       setCustomFolders([...customFolders, trimmed]);
     }
+    // Sync folder to Supabase
+    createFolderInSupabase(trimmed, user.email);
+
     setSelectedFolder(trimmed);
     setNewFolderNameInput('');
     setShowAddFolderModal(false);
@@ -244,6 +272,11 @@ export const NotesPage: React.FC = () => {
   // Save Manual Note
   const handleSaveNewNote = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAdmin) {
+      triggerAdminLock('Save Manual Note');
+      return;
+    }
+
     if (!formTitle.trim() || !formContent.trim()) return;
 
     const todayStr = new Date().toISOString().split('T')[0];
@@ -350,19 +383,33 @@ export const NotesPage: React.FC = () => {
 
         <div className="flex items-center gap-3 z-10">
           <button
-            onClick={() => setShowAddFolderModal(true)}
-            className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition flex items-center gap-2 backdrop-blur-sm"
+            onClick={() => {
+              if (!isAdmin) {
+                triggerAdminLock('+ New Digital Folder');
+              } else {
+                setShowAddFolderModal(true);
+              }
+            }}
+            className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition flex items-center gap-2 backdrop-blur-sm shadow-sm"
           >
             <FolderPlus className="w-4 h-4 text-emerald-400" />
             <span>+ New Digital Folder</span>
+            {!isAdmin ? <Lock className="w-3 h-3 text-amber-400 ml-1" /> : <ShieldCheck className="w-3 h-3 text-emerald-400 ml-1" />}
           </button>
 
           <button
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => {
+              if (!isAdmin) {
+                triggerAdminLock('Write Manual Note');
+              } else {
+                setShowCreateModal(true);
+              }
+            }}
             className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs shadow-lg transition flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
             <span>Write Manual Note</span>
+            {!isAdmin ? <Lock className="w-3.5 h-3.5 text-amber-300" /> : <ShieldCheck className="w-3.5 h-3.5 text-blue-200" />}
           </button>
         </div>
       </div>

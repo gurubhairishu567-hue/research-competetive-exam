@@ -4,6 +4,8 @@ import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
 
+import { AdminGuardModal } from './components/common/AdminGuardModal';
+
 // Pages
 import { HomePage } from './pages/HomePage';
 import { DashboardPage } from './pages/DashboardPage';
@@ -106,6 +108,9 @@ const MainLayout: React.FC = () => {
 
       {/* Page Footer */}
       <Footer />
+
+      {/* Global Admin Permission Guard Modal */}
+      <AdminGuardModal />
 
     </div>
   );

@@ -54,7 +54,7 @@ interface SubjectPaperMeta {
 }
 
 export const PYQPage: React.FC = () => {
-  const { questions, addBookmark, setCurrentPage } = useApp();
+  const { questions, addBookmark, setCurrentPage, recordDownloadedItem } = useApp();
 
   const [activeTab, setActiveTab] = useState<'analysis' | 'subject-papers' | 'repository' | 'test'>('subject-papers');
 
@@ -315,9 +315,61 @@ Keep it crisp, exam-oriented, with high-yield bullet points.`;
 
   const handleDownloadPDF = (subjectName: string) => {
     setDownloadingSubject(subjectName);
+    const fileName = `UPSC_Solved_PYQ_${subjectName.replace(/\s+/g, '_')}_2014_2024.pdf`;
+    const title = `${subjectName} 10-Year Solved PYQ Compilation (2014-2024)`;
+    const summary = `Complete chapter-wise solved questions with UPSC standard model explanations, elimination techniques, and weightage analysis for ${subjectName}.`;
+
+    try {
+      const fileData = `===============================================================
+EXAMNEXUS AI - PREVIOUS YEAR QUESTIONS COMPILATION
+SUBJECT: ${subjectName.toUpperCase()}
+YEARS COVERED: 2014 - 2024 (10 Years Solved)
+EXAM TARGET: UPSC Civil Services, State PSC, SSC CGL
+DOWNLOADED: ${new Date().toLocaleDateString('en-IN')}
+===============================================================
+
+KEY HIGH YIELD TOPICS:
+- Core Conceptual Definitions and Constitutional/Thematic Articles
+- Chronological Sequences, Trend Assertions & Match the following
+- Recent Current Affairs Applied Static Questions
+
+SUMMARY & METHODOLOGY:
+${summary}
+
+===============================================================
+Extract and revise these question sets regularly.
+Explore interactive mock tests at ExamNexus.
+===============================================================`;
+
+      const blob = new Blob([fileData], { type: 'application/pdf;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      recordDownloadedItem({
+        title,
+        category: 'Solved PYQ Key',
+        source: 'UPSC & State PSC Examination Boards',
+        sourceUrl: 'https://upsc.gov.in',
+        fileName,
+        fileSize: '8.4 MB',
+        type: 'pyq',
+        contentSummary: summary,
+        rawText: fileData,
+        tags: [subjectName, 'PYQ', 'UPSC', '10-Years']
+      });
+    } catch (e) {
+      console.error(e);
+    }
+
     setTimeout(() => {
       setDownloadingSubject(null);
-    }, 3000);
+    }, 2000);
   };
 
   const handleSolveSubjectPYQs = (subj: string) => {

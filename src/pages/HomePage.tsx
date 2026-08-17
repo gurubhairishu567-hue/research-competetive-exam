@@ -18,7 +18,8 @@ import {
   HelpCircle,
   Microscope,
   Globe,
-  UserPlus
+  UserPlus,
+  ExternalLink
 } from 'lucide-react';
 import { SAMPLE_FAQS } from '../data/mockData';
 
@@ -43,28 +44,28 @@ export const HomePage: React.FC = () => {
     <div className="space-y-16 pb-12">
       
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden pt-8 pb-12 md:pt-12 md:pb-16 bg-[#0F172A] text-white rounded-2xl p-6 sm:p-10 border border-slate-800 shadow-xl">
+      <section className="relative overflow-hidden pt-8 pb-12 md:pt-12 md:pb-16 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-2xl p-6 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-xl transition-colors">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-950/80 text-indigo-300 text-xs font-bold tracking-wide uppercase border border-indigo-800/50 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wide uppercase border border-indigo-200 dark:border-indigo-800/50 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
             <span>Next-Gen Competitive Exam Intelligence</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
             Research Smarter. Prepare Better. <br className="hidden sm:inline" />
-            <span className="text-indigo-400">
+            <span className="text-indigo-600 dark:text-indigo-400">
               Crack Your Examination.
             </span>
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
             Your comprehensive AI-powered research portal, digital library, current-affairs platform, practice engine, and personalized study assistant for Indian competitive examinations.
           </p>
 
           {/* Universal Hero Search Bar */}
           <form onSubmit={handleHeroSearchSubmit} className="max-w-2xl mx-auto mt-4">
-            <div className="relative flex items-center bg-white dark:bg-slate-900 rounded-xl p-2 shadow-2xl border border-slate-200 dark:border-slate-800">
+            <div className="relative flex items-center bg-slate-50 dark:bg-slate-950 rounded-xl p-2 shadow-xl border border-slate-300 dark:border-slate-800">
               <Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
               <input
                 type="text"
@@ -84,13 +85,13 @@ export const HomePage: React.FC = () => {
 
             {/* Quick search chips */}
             <div className="flex flex-wrap items-center justify-center gap-2 mt-3 text-xs text-slate-500 dark:text-slate-400">
-              <span className="font-semibold text-slate-400">Popular:</span>
+              <span className="font-semibold text-slate-500 dark:text-slate-400">Popular:</span>
               {['Fundamental Rights', 'India GDP 2026', 'UPSC Polity Questions', 'Semiconductor Mission', 'Monetary Policy'].map(chip => (
                 <button
                   key={chip}
                   type="button"
                   onClick={() => handleQuickTopicClick(chip)}
-                  className="px-2.5 py-1 rounded-lg bg-white/80 dark:bg-slate-800/80 hover:bg-blue-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-medium transition"
+                  className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium transition"
                 >
                   {chip}
                 </button>
@@ -104,31 +105,39 @@ export const HomePage: React.FC = () => {
               onClick={() => setCurrentPage('dashboard')}
               className="px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-lg transition flex items-center gap-2 ring-2 ring-indigo-400/50"
             >
-              <Target className="w-4 h-4 text-emerald-400" />
+              <Target className="w-4 h-4 text-emerald-300" />
               <span>Aspirant Dashboard</span>
             </button>
 
             <button
               onClick={() => setCurrentPage('exams')}
-              className="px-6 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-sm transition flex items-center gap-2"
+              className="px-6 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-bold text-sm transition flex items-center gap-2"
             >
-              <Compass className="w-4 h-4 text-indigo-400" />
+              <Compass className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               <span>Explore All Exams</span>
             </button>
 
             <button
               onClick={() => setCurrentPage('ai-assistant')}
-              className="px-6 py-3 rounded-lg bg-white text-slate-900 font-bold text-sm shadow hover:bg-slate-100 transition flex items-center gap-2"
+              className="px-6 py-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-700 border border-indigo-200 dark:border-slate-700 text-indigo-900 dark:text-slate-100 font-bold text-sm shadow-sm transition flex items-center gap-2"
             >
-              <Sparkles className="w-4 h-4 text-indigo-600" />
+              <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               <span>Ask AI Mentor</span>
+            </button>
+
+            <button
+              onClick={() => setCurrentPage('resources')}
+              className="px-6 py-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-700 border border-indigo-200 dark:border-slate-700 text-indigo-900 dark:text-slate-100 font-bold text-sm shadow-sm transition flex items-center gap-2"
+            >
+              <BookOpen className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <span>Govt Reports & NCERT</span>
             </button>
 
             <button
               onClick={() => setCurrentPage('world-news')}
               className="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow transition flex items-center gap-2"
             >
-              <Globe className="w-4 h-4 text-emerald-200" />
+              <Globe className="w-4 h-4 text-emerald-100" />
               <span>World News (AI)</span>
             </button>
           </div>
@@ -181,8 +190,25 @@ export const HomePage: React.FC = () => {
                   {ex.description}
                 </p>
 
-                <div className="pt-2 border-t border-slate-100 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-300 space-y-1.5">
                   <div><strong>Upcoming:</strong> {ex.upcomingDate}</div>
+                  {ex.officialWebsite && (
+                    <div className="flex items-center justify-between text-[11px] bg-slate-50 dark:bg-slate-900/60 px-2 py-1 rounded-md border border-slate-200/60 dark:border-slate-700">
+                      <span className="text-slate-500 dark:text-slate-400 font-medium truncate max-w-[130px]" title={ex.officialWebsiteName}>
+                        {ex.officialWebsiteName ? ex.officialWebsiteName.replace(/.*\((.*?)\)/, '$1') : 'Govt Portal'}
+                      </span>
+                      <a
+                        href={ex.officialWebsite}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline inline-flex items-center gap-0.5 shrink-0"
+                        title={ex.officialWebsiteName || 'Govt Official Portal'}
+                      >
+                        <span>Official</span>
+                        <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    </div>
+                  )}
                   <div className="text-slate-400 text-[11px]"><strong>Qualification:</strong> {ex.qualification}</div>
                 </div>
               </div>

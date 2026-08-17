@@ -1,7 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { UserProfile, Exam, CurrentAffairItem, Question, NoteItem, Flashcard, StudyPlan, ResourceItem, MockTest } from '../types';
 import { INITIAL_USER_PROFILE, SAMPLE_EXAMS, SAMPLE_CURRENT_AFFAIRS, SAMPLE_QUESTIONS, SAMPLE_NOTES, SAMPLE_FLASHCARDS, SAMPLE_RESOURCES, SAMPLE_STUDY_PLAN, SAMPLE_MOCK_TESTS } from '../data/mockData';
-import { saveToSupabase, loadFromSupabase, testSupabaseConnection, SUPABASE_URL } from '../lib/supabase';
+import { 
+  saveToSupabase, 
+  loadFromSupabase, 
+  testSupabaseConnection, 
+  SUPABASE_URL,
+  createNoteInSupabase,
+  createFolderInSupabase,
+  createFlashcardInSupabase,
+  createCurrentAffairInSupabase,
+  createQuestionInSupabase
+} from '../lib/supabase';
 
 export interface BookmarkItem {
   id: string;
@@ -20,6 +30,21 @@ export interface AppNotification {
   time: string;
   read: boolean;
   type: 'exam' | 'current-affairs' | 'reminder' | 'system';
+}
+
+export interface DownloadedItem {
+  id: string;
+  title: string;
+  category: string;
+  source: string;
+  sourceUrl?: string;
+  fileName: string;
+  fileSize: string;
+  downloadedAt: string;
+  type: 'pdf' | 'report' | 'bill' | 'ncert' | 'notes' | 'pyq' | 'test-result' | 'custom';
+  contentSummary: string;
+  rawText?: string;
+  tags?: string[];
 }
 
 interface RegisteredUserAccount {
@@ -73,6 +98,10 @@ interface AppContextType {
   addBookmark: (item: Omit<BookmarkItem, 'dateAdded'>) => void;
   removeBookmark: (id: string) => void;
   isBookmarked: (id: string) => boolean;
+  downloadedItems: DownloadedItem[];
+  recordDownloadedItem: (item: Omit<DownloadedItem, 'id' | 'downloadedAt'>) => void;
+  deleteDownloadedItem: (id: string) => void;
+  clearAllDownloads: () => void;
   notifications: AppNotification[];
   markNotificationRead: (id: string) => void;
   clearAllNotifications: () => void;
@@ -82,6 +111,14 @@ interface AppContextType {
   setActiveTestId: (id: string | null) => void;
   testHistory: any[];
   addTestAttempt: (attempt: any) => void;
+  // Admin & Permission controls
+  isAdmin: boolean;
+  isAdminMode: boolean;
+  setIsAdminMode: (isAdmin: boolean) => void;
+  showAdminLockModal: boolean;
+  setShowAdminLockModal: (show: boolean) => void;
+  adminLockFeatureName: string;
+  triggerAdminLock: (featureName: string) => void;
   // Supabase state
   supabaseStatus: {
     connected: boolean;
@@ -155,6 +192,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [pageParams, setPageParams] = useState<Record<string, any>>({});
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeTestId, setActiveTestId] = useState<string | null>(null);
+
+  // Admin and Permissions State
+  const [isAdminMode, setIsAdminModeState] = useState<boolean>(() => {
+    const saved = localStorage.getItem('examnexus_is_admin_mode');
+    return saved !== null ? saved === 'true' : true; // Default to true for primary developer/admin
+  });
+  const [showAdminLockModal, setShowAdminLockModal] = useState<boolean>(false);
+  const [adminLockFeatureName, setAdminLockFeatureName] = useState<string>('');
+
+  const setIsAdminMode = (mode: boolean) => {
+    setIsAdminModeState(mode);
+    localStorage.setItem('examnexus_is_admin_mode', String(mode));
+  };
+
+  const triggerAdminLock = (featureName: string) => {
+    setAdminLockFeatureName(featureName);
+    setShowAdminLockModal(true);
+  };
+
+  const isAdmin = Boolean(
+    isAdminMode || 
+    user?.role === 'admin' || 
+    user?.email === 'gurubhairishu567@gmail.com'
+  );
 
   const [exams] = useState<Exam[]>(SAMPLE_EXAMS);
   const [selectedExamId, setSelectedExamIdState] = useState<string>('upsc-cse');
@@ -261,6 +322,99 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       type: 'reminder'
     }
   ]);
+
+  const [downloadedItems, setDownloadedItems] = useState<DownloadedItem[]>(() => {
+    const saved = localStorage.getItem('examnexus_downloads');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        // fallback
+      }
+    }
+    return [
+      {
+        id: 'dl-1',
+        title: 'Union Budget 2026-27 Comprehensive Policy Highlights & Capital Outlay Summary',
+        category: 'Government Official Report',
+        source: 'Ministry of Finance (indiabudget.gov.in)',
+        sourceUrl: 'https://www.indiabudget.gov.in',
+        fileName: 'Union_Budget_2026_27_Highlights.pdf',
+        fileSize: '4.8 MB',
+        downloadedAt: new Date(Date.now() - 3600000 * 3).toLocaleString('en-IN'),
+        type: 'report',
+        contentSummary: 'Complete key highlights of Union Budget 2026-27 including infrastructure capital expenditure target of ₹11.8 Lakh Crore, fiscal deficit target of 4.5%, MSME credit guarantee enhancements, and green energy corridor allocations.',
+        rawText: `UNION BUDGET 2026-27 KEY SUMMARY
+Source: Ministry of Finance (indiabudget.gov.in)
+Capex Outlay: Rs 11.8 Lakh Crore (3.4% of GDP)
+Fiscal Deficit Target: 4.5% of GDP
+Tax Slabs: Revised standard deduction to Rs 75,000 in new regime.
+Key Thrust Areas: Next-Gen Infrastructure, Digital Public Infrastructure 2.0, Deep Tech Innovation Fund.`,
+        tags: ['Budget', 'Economy', 'Fiscal Policy', 'GS-3']
+      },
+      {
+        id: 'dl-2',
+        title: 'Bharatiya Nyaya Sanhita (BNS) 2023 - Official Gazette & Comparative Compendium',
+        category: 'Parliament Passed Act',
+        source: 'Ministry of Law & Justice (egazette.gov.in)',
+        sourceUrl: 'https://egazette.gov.in',
+        fileName: 'Bharatiya_Nyaya_Sanhita_2023_Gazette.pdf',
+        fileSize: '12.4 MB',
+        downloadedAt: new Date(Date.now() - 3600000 * 18).toLocaleString('en-IN'),
+        type: 'bill',
+        contentSummary: 'Official Gazette copy replacing Indian Penal Code (IPC) 1860. Contains 358 sections, introduction of community service for petty offences, terrorism definitions under Section 113, and organized crime provisions under Section 111.',
+        rawText: `BHARATIYA NYAYA SANHITA (BNS) 2023
+Source: Legislative Department (legislative.gov.in) / Gazette of India
+Key Highlights:
+- Repeals IPC 1860. Contains 358 sections.
+- Section 113: Clear definition of Terrorism as acts threatening unity, integrity, sovereignty or security of India.
+- Section 111: Organized Crime with strict penalties.
+- Community service introduced as a recognized statutory punishment for first-time petty theft.`,
+        tags: ['Law', 'Polity', 'Criminal Law Reform', 'GS-2']
+      },
+      {
+        id: 'dl-3',
+        title: 'NCERT Class 11 - Indian Constitution at Work (Complete Textbook Compendium)',
+        category: 'NCERT Textbook',
+        source: 'NCERT Official Portal (ncert.nic.in)',
+        sourceUrl: 'https://ncert.nic.in/textbook.php',
+        fileName: 'NCERT_Class11_Indian_Constitution_At_Work.pdf',
+        fileSize: '18.2 MB',
+        downloadedAt: new Date(Date.now() - 3600000 * 36).toLocaleString('en-IN'),
+        type: 'ncert',
+        contentSummary: 'Core conceptual foundation textbook for UPSC & State PSC Polity. Chapters cover Constitution: Why & How, Rights in the Indian Constitution, Election & Representation, Executive, Legislature, Judiciary, Federalism, Local Governments, and Living Constitution.',
+        rawText: `NCERT CLASS 11: INDIAN CONSTITUTION AT WORK
+Source: National Council of Educational Research and Training (ncert.nic.in)
+Core Themes:
+- Chapter 1: Constitution: Why and How? Authority of constitutions and institutional design.
+- Chapter 2: Rights in the Indian Constitution (Articles 12 to 35, Fundamental Duties Article 51A).
+- Chapter 3: Election and Representation (First-Past-the-Post vs Proportional Representation).
+- Chapter 4: Executive (Parliamentary system vs Presidential system).
+- Chapter 5: Legislature (Bicameralism, Parliamentary control).
+- Chapter 6: Judiciary (Judicial Review, Judicial Activism, Basic Structure Doctrine).`,
+        tags: ['NCERT', 'Polity', 'Class 11', 'Foundations']
+      },
+      {
+        id: 'dl-4',
+        title: 'Economic Survey 2025-26 - State of the Economy & Sectoral Projections',
+        category: 'Government Official Report',
+        source: 'Department of Economic Affairs (econsurvey.gov.in)',
+        sourceUrl: 'https://www.indiabudget.gov.in/economicsurvey/',
+        fileName: 'Economic_Survey_2025_26_Key_Chapters.pdf',
+        fileSize: '8.5 MB',
+        downloadedAt: new Date(Date.now() - 3600000 * 50).toLocaleString('en-IN'),
+        type: 'report',
+        contentSummary: 'Comprehensive analytical survey of real GDP growth at 6.8-7.2%, service sector resilience, inflation moderation within RBI tolerance band, manufacturing PMI, and agricultural output trends.',
+        rawText: `ECONOMIC SURVEY 2025-26
+Source: Economic Division, Ministry of Finance (indiabudget.gov.in/economicsurvey)
+- GDP Growth Projection: 6.8% to 7.2% for FY27.
+- External Sector: Robust forex reserves exceeding $680 Billion.
+- Services Sector: Leading driver of GVA growth at 7.6%.
+- Inflation: Headline CPI averaging around 4.5%, within the RBI target tolerance band (4% +/- 2%).`,
+        tags: ['Economic Survey', 'GS-3', 'Macroeconomics']
+      }
+    ];
+  });
 
   // Supabase Connection State
   const [supabaseStatus, setSupabaseStatus] = useState({
@@ -379,10 +533,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const addCurrentAffairsArticle = (article: CurrentAffairItem) => {
     setCurrentAffairs(prev => [article, ...prev]);
+    createCurrentAffairInSupabase(article, user.email);
   };
 
   const addQuestion = (q: Question) => {
     setQuestions(prev => [q, ...prev]);
+    createQuestionInSupabase(q, user.email);
   };
 
   const addNote = (noteData: Omit<NoteItem, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -393,10 +549,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updatedAt: new Date().toISOString().split('T')[0]
     };
     setNotes(prev => [newNote, ...prev]);
+    createNoteInSupabase(newNote, user.email);
   };
 
   const updateNote = (id: string, updates: Partial<NoteItem>) => {
-    setNotes(prev => prev.map(n => (n.id === id ? { ...n, ...updates, updatedAt: new Date().toISOString().split('T')[0] } : n)));
+    setNotes(prev => {
+      const updated = prev.map(n => (n.id === id ? { ...n, ...updates, updatedAt: new Date().toISOString().split('T')[0] } : n));
+      const target = updated.find(n => n.id === id);
+      if (target) {
+        createNoteInSupabase(target, user.email);
+      }
+      return updated;
+    });
   };
 
   const deleteNote = (id: string) => {
@@ -409,6 +573,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `fc-${Date.now()}`
     };
     setFlashcards(prev => [newFc, ...prev]);
+    createFlashcardInSupabase(newFc, user.email);
   };
 
   const toggleTaskCompletion = (weekNum: number, taskId: string) => {
@@ -453,6 +618,33 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const clearAllNotifications = () => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
+  const recordDownloadedItem = (item: Omit<DownloadedItem, 'id' | 'downloadedAt'>) => {
+    const newItem: DownloadedItem = {
+      ...item,
+      id: `dl-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      downloadedAt: new Date().toLocaleString('en-IN')
+    };
+    setDownloadedItems(prev => {
+      const filtered = prev.filter(x => x.fileName !== item.fileName);
+      const updated = [newItem, ...filtered];
+      localStorage.setItem('examnexus_downloads', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const deleteDownloadedItem = (id: string) => {
+    setDownloadedItems(prev => {
+      const updated = prev.filter(x => x.id !== id);
+      localStorage.setItem('examnexus_downloads', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const clearAllDownloads = () => {
+    setDownloadedItems([]);
+    localStorage.removeItem('examnexus_downloads');
   };
 
   const addTestAttempt = (attempt: any) => {
@@ -662,6 +854,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addBookmark,
         removeBookmark,
         isBookmarked,
+        downloadedItems,
+        recordDownloadedItem,
+        deleteDownloadedItem,
+        clearAllDownloads,
         notifications,
         markNotificationRead,
         clearAllNotifications,
@@ -671,6 +867,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setActiveTestId,
         testHistory,
         addTestAttempt,
+        isAdmin,
+        isAdminMode,
+        setIsAdminMode,
+        showAdminLockModal,
+        setShowAdminLockModal,
+        adminLockFeatureName,
+        triggerAdminLock,
         supabaseStatus,
         syncAllToSupabase
       }}

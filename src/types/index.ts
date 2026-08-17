@@ -6,6 +6,8 @@ export interface Exam {
   shortName: string;
   category: ExamCategory;
   conductingBody: string;
+  officialWebsite?: string;
+  officialWebsiteName?: string;
   qualification: string;
   ageLimit: string;
   attempts: string;
@@ -192,6 +194,7 @@ export interface StudyPlan {
 export interface UserProfile {
   name: string;
   email: string;
+  role?: 'admin' | 'user';
   avatarPhoto?: string;
   targetExam: string;
   prepLevel: 'Beginner' | 'Intermediate' | 'Advanced';
