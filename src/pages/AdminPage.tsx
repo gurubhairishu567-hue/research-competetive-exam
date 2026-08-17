@@ -736,6 +736,20 @@ export const AdminPage: React.FC = () => {
                 <span>{connectionTestResult.message}</span>
               </div>
             )}
+
+            <div className="space-y-2 pt-2">
+              <div className="flex items-center justify-between">
+                <span className="font-extrabold text-slate-800 dark:text-slate-200 text-xs">
+                  PostgreSQL Tables, Login/Signup Auth, RLS Policies & Admin Seeds:
+                </span>
+                <span className="text-[11px] text-indigo-600 dark:text-indigo-400 font-bold">
+                  Run in Supabase Dashboard → SQL Editor
+                </span>
+              </div>
+              <pre className="p-4 rounded-2xl bg-slate-900 text-emerald-400 font-mono text-[11px] overflow-x-auto max-h-96 border border-slate-700 leading-relaxed shadow-inner">
+                {SUPABASE_SETUP_SQL}
+              </pre>
+            </div>
           </div>
         </div>
       )}

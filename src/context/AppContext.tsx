@@ -12,7 +12,9 @@ import {
   createFlashcardInSupabase,
   createCurrentAffairInSupabase,
   createQuestionInSupabase,
-  createResourceInSupabase
+  createResourceInSupabase,
+  createRegisteredUserInSupabase,
+  fetchRegisteredUsersFromSupabase
 } from '../lib/supabase';
 
 export interface BookmarkItem {
@@ -556,6 +558,26 @@ Source: Economic Division, Ministry of Finance (indiabudget.gov.in/economicsurve
         message: res.message
       }));
     });
+    // Load registered users from Supabase if available
+    fetchRegisteredUsersFromSupabase().then(dbUsers => {
+      if (dbUsers && Array.isArray(dbUsers) && dbUsers.length > 0) {
+        setRegisteredUsers(prev => {
+          const map = new Map<string, RegisteredUserAccount>();
+          prev.forEach(u => map.set(u.email.toLowerCase(), u));
+          dbUsers.forEach((u: any) => {
+            map.set(u.email.toLowerCase(), {
+              name: u.name,
+              email: u.email,
+              password: u.password_hash,
+              targetExam: u.target_exam,
+              avatarPhoto: u.avatar_photo,
+              createdAt: u.created_at
+            });
+          });
+          return Array.from(map.values());
+        });
+      }
+    }).catch(() => {});
     // Trigger initial sync
     syncAllToSupabase();
   }, []);
@@ -890,7 +912,8 @@ Source: Economic Division, Ministry of Finance (indiabudget.gov.in/economicsurve
     localStorage.setItem('examnexus_is_authenticated', 'true');
     localStorage.setItem('examnexus_user', JSON.stringify(newUserProfile));
 
-    // Try background sync to Supabase
+    // Save newly created user account & profile to Supabase database
+    createRegisteredUserInSupabase(newAccount).catch(() => {});
     saveToSupabase('user_profile', newUserProfile, cleanEmail).catch(() => {});
 
     return { success: true };

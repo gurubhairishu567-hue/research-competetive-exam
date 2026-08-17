@@ -27,20 +27,82 @@ export const SUPABASE_SETUP_SQL = `-- ==========================================
 -- 1. EXTENSIONS
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- 2. USER PROFILES TABLE (Linked with Supabase Auth or Standalone)
-CREATE TABLE IF NOT EXISTS public.profiles (
+-- 2. REGISTERED USERS AUTH TABLE (Direct Login & Sign Up Storage)
+CREATE TABLE IF NOT EXISTS public.registered_users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     email TEXT UNIQUE NOT NULL,
-    name TEXT NOT NULL DEFAULT 'Aspirant',
+    name TEXT NOT NULL,
+    password_hash TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('admin', 'user', 'moderator')),
+    target_exam TEXT DEFAULT 'UPSC CSE (Civil Services)',
+    avatar_photo TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 3. USER PROFILES & STUDY PROGRESS TABLE
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email TEXT UNIQUE,
+    name TEXT NOT NULL DEFAULT 'Aspirant',
+    role TEXT NOT NULL DEFAULT 'user',
     target_exam TEXT DEFAULT 'UPSC Civil Services',
     prep_level TEXT DEFAULT 'Intermediate',
+    daily_target_minutes INTEGER DEFAULT 240,
+    study_time_today_minutes INTEGER DEFAULT 165,
+    questions_solved_today INTEGER DEFAULT 38,
+    accuracy_rate NUMERIC(5,2) DEFAULT 78.50,
+    tests_completed_count INTEGER DEFAULT 12,
+    streak_days INTEGER DEFAULT 14,
     avatar_url TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 3. NOTES & DIGITAL FOLDERS TABLE
+-- Fix: Add missing columns if profiles table already existed from earlier schema/template
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS email TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS name TEXT DEFAULT 'Aspirant';
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'user';
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS target_exam TEXT DEFAULT 'UPSC Civil Services';
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS prep_level TEXT DEFAULT 'Intermediate';
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS daily_target_minutes INTEGER DEFAULT 240;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS study_time_today_minutes INTEGER DEFAULT 165;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS questions_solved_today INTEGER DEFAULT 38;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS accuracy_rate NUMERIC(5,2) DEFAULT 78.50;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS tests_completed_count INTEGER DEFAULT 12;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS streak_days INTEGER DEFAULT 14;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS avatar_url TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
+
+-- Ensure email uniqueness on profiles
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'profiles_email_unique'
+    ) THEN
+        ALTER TABLE public.profiles ADD CONSTRAINT profiles_email_unique UNIQUE (email);
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN NULL;
+END $$;
+
+-- 4. ADMIN UPLOADED FILES & REPOSITORY TABLE
+CREATE TABLE IF NOT EXISTS public.uploaded_files (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    size TEXT,
+    type TEXT,
+    category TEXT,
+    target_exam TEXT,
+    destination TEXT,
+    url TEXT,
+    description TEXT,
+    uploaded_by_email TEXT NOT NULL DEFAULT 'gurubhairishu567@gmail.com',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 5. NOTES & DIGITAL FOLDERS TABLE
 CREATE TABLE IF NOT EXISTS public.notes (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
@@ -133,7 +195,9 @@ CREATE TABLE IF NOT EXISTS public.examnexus_store (
 );
 
 -- 10. ENABLE ROW LEVEL SECURITY (RLS)
+ALTER TABLE public.registered_users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.uploaded_files ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.folders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.flashcards ENABLE ROW LEVEL SECURITY;
@@ -143,41 +207,74 @@ ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.examnexus_store ENABLE ROW LEVEL SECURITY;
 
 -- 11. ROW LEVEL SECURITY POLICIES
--- A. Profiles Policy
+-- A. Registered Users (Login & Signup Data)
+DROP POLICY IF EXISTS "Public can signup and read registered_users" ON public.registered_users;
+CREATE POLICY "Public can signup and read registered_users" ON public.registered_users FOR ALL USING (true);
+
+-- B. Profiles Policy
+DROP POLICY IF EXISTS "Public read for profiles" ON public.profiles;
+DROP POLICY IF EXISTS "Admin update profiles" ON public.profiles;
 CREATE POLICY "Public read for profiles" ON public.profiles FOR SELECT USING (true);
 CREATE POLICY "Admin update profiles" ON public.profiles FOR ALL USING (true);
 
--- B. Notes Policies (All users can view, anyone can insert if authenticated or admin)
+-- C. Uploaded Files
+DROP POLICY IF EXISTS "Anyone can view uploaded files" ON public.uploaded_files;
+CREATE POLICY "Anyone can view uploaded files" ON public.uploaded_files FOR ALL USING (true);
+
+-- D. Notes Policies
+DROP POLICY IF EXISTS "Anyone can read notes" ON public.notes;
+DROP POLICY IF EXISTS "Admin and creators can insert notes" ON public.notes;
+DROP POLICY IF EXISTS "Admin and creators can update notes" ON public.notes;
+DROP POLICY IF EXISTS "Admin can delete notes" ON public.notes;
 CREATE POLICY "Anyone can read notes" ON public.notes FOR SELECT USING (true);
 CREATE POLICY "Admin and creators can insert notes" ON public.notes FOR INSERT WITH CHECK (true);
 CREATE POLICY "Admin and creators can update notes" ON public.notes FOR UPDATE USING (true);
 CREATE POLICY "Admin can delete notes" ON public.notes FOR DELETE USING (true);
 
--- C. Folders Policies
+-- E. Folders Policies
+DROP POLICY IF EXISTS "Anyone can read folders" ON public.folders;
+DROP POLICY IF EXISTS "Admin can insert folders" ON public.folders;
 CREATE POLICY "Anyone can read folders" ON public.folders FOR SELECT USING (true);
 CREATE POLICY "Admin can insert folders" ON public.folders FOR INSERT WITH CHECK (true);
 
--- D. Flashcards Policies
+-- F. Flashcards Policies
+DROP POLICY IF EXISTS "Anyone can read flashcards" ON public.flashcards;
+DROP POLICY IF EXISTS "Admin and users can insert flashcards" ON public.flashcards;
 CREATE POLICY "Anyone can read flashcards" ON public.flashcards FOR SELECT USING (true);
 CREATE POLICY "Admin and users can insert flashcards" ON public.flashcards FOR INSERT WITH CHECK (true);
 
--- E. Current Affairs & Questions (Admin Managed)
+-- G. Current Affairs & Questions (Admin Managed)
+DROP POLICY IF EXISTS "Anyone can read current affairs" ON public.current_affairs;
+DROP POLICY IF EXISTS "Admin can insert current affairs" ON public.current_affairs;
 CREATE POLICY "Anyone can read current affairs" ON public.current_affairs FOR SELECT USING (true);
 CREATE POLICY "Admin can insert current affairs" ON public.current_affairs FOR INSERT WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Anyone can read questions" ON public.practice_questions;
+DROP POLICY IF EXISTS "Admin can insert questions" ON public.practice_questions;
 CREATE POLICY "Anyone can read questions" ON public.practice_questions FOR SELECT USING (true);
 CREATE POLICY "Admin can insert questions" ON public.practice_questions FOR INSERT WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Anyone can read resources" ON public.resources;
+DROP POLICY IF EXISTS "Admin can insert resources" ON public.resources;
 CREATE POLICY "Anyone can read resources" ON public.resources FOR SELECT USING (true);
 CREATE POLICY "Admin can insert resources" ON public.resources FOR INSERT WITH CHECK (true);
 
--- F. Key-Value Store Policy
+-- H. Key-Value Store Policy
+DROP POLICY IF EXISTS "Public access to examnexus_store" ON public.examnexus_store;
 CREATE POLICY "Public access to examnexus_store" ON public.examnexus_store FOR ALL USING (true);
 
--- 12. SEED DEFAULT ADMIN ACCOUNT
+-- 12. SEED DEFAULT ADMIN ACCOUNT & DEMO ASPIRANTS
+INSERT INTO public.registered_users (email, name, password_hash, role, target_exam, avatar_photo)
+VALUES 
+    ('gurubhairishu567@gmail.com', 'Gurubhai Rishu', 'rishu@2005', 'admin', 'UPSC CSE (Civil Services)', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'),
+    ('rahul.upsc@examnexus.ai', 'Rahul Sharma', 'password123', 'user', 'UPSC CSE (Civil Services)', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&auto=format&fit=crop&q=80'),
+    ('priya.ssc@examnexus.ai', 'Priya Verma', 'password123', 'user', 'SSC CGL', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80')
+ON CONFLICT (email) DO UPDATE 
+SET password_hash = EXCLUDED.password_hash, role = EXCLUDED.role, name = EXCLUDED.name;
+
 INSERT INTO public.profiles (email, name, role, target_exam)
 VALUES ('gurubhairishu567@gmail.com', 'Gurubhai Rishu (Admin)', 'admin', 'UPSC Civil Services')
-ON CONFLICT (email) DO UPDATE SET role = 'admin';
+ON CONFLICT (email) DO UPDATE SET role = 'admin', name = EXCLUDED.name;
 
 -- =========================================================
 -- Schema setup complete! All tables and security policies ready.
@@ -455,4 +552,63 @@ export async function testSupabaseConnection(): Promise<{ connected: boolean; me
     };
   }
 }
+
+/**
+ * Inserts or updates a registered user account in Supabase auth table.
+ */
+export async function createRegisteredUserInSupabase(account: {
+  name: string;
+  email: string;
+  password?: string;
+  targetExam?: string;
+  avatarPhoto?: string;
+  role?: string;
+}) {
+  try {
+    const payload = {
+      email: account.email.toLowerCase().trim(),
+      name: account.name.trim(),
+      password_hash: account.password || 'rishu@2005',
+      role: account.role || (account.email.toLowerCase().trim() === 'gurubhairishu567@gmail.com' ? 'admin' : 'user'),
+      target_exam: account.targetExam || 'UPSC CSE (Civil Services)',
+      avatar_photo: account.avatarPhoto || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(account.name)}`,
+      updated_at: new Date().toISOString()
+    };
+
+    const { data, error } = await supabase
+      .from('registered_users')
+      .upsert(payload, { onConflict: 'email' });
+
+    if (error) {
+      console.warn('[Supabase Auth Save Notice]:', error.message);
+      // Fallback: save to KV store
+      await saveToSupabase(`user_account_${payload.email}`, payload, payload.email);
+      return { success: true, fallback: true };
+    }
+
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, error: err?.message || 'Network error' };
+  }
+}
+
+/**
+ * Loads all registered users from Supabase.
+ */
+export async function fetchRegisteredUsersFromSupabase() {
+  try {
+    const { data, error } = await supabase
+      .from('registered_users')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      return null;
+    }
+    return data;
+  } catch (err) {
+    return null;
+  }
+}
+
 
