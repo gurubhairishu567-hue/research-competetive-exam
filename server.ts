@@ -764,6 +764,68 @@ Published today in regional diplomatic briefs.
   }
 });
 
+// 8. AI Digital Notes Generation API (Topicwise Digital Notes & Digital Folder Organization)
+app.post("/api/ai/generate-topic-note", async (req, res) => {
+  try {
+    const { topic, folder = "Polity", targetExam = "UPSC Civil Services" } = req.body;
+    if (!topic) {
+      return res.status(400).json({ error: "Topic is required" });
+    }
+
+    const ai = getGeminiClient();
+
+    const systemInstruction = `You are ExamNexus AI, an expert academic author for Indian competitive examinations (UPSC CSE, State PCS, SSC CGL, Banking, Defence).
+Your goal is to generate comprehensive, exhaustive, exam-oriented digital study notes in structured Markdown for any requested topic.
+Make sure the notes include:
+1. Clear main title and executive summary.
+2. Core Conceptual Breakdown with key subheadings.
+3. Constitutional, Statutory, Legal, or Policy Framework (Articles, Acts, or Metrics).
+4. High-Yield Prelims Facts (Data, Nodal Ministries, Key Figures).
+5. Mains Answer Writing Dimensions (Pros, Cons, Way Forward, Landmark Cases / Reports).
+6. Quick Summary Box for rapid 2-minute revision.`;
+
+    const prompt = `Generate comprehensive digital study notes for the topic: "${topic}" under the subject folder: "${folder}" for ${targetExam}.
+Return a clean JSON object with:
+- "title": A clear descriptive title for the note
+- "folder": "${folder}"
+- "tags": array of 3-4 relevant topic tag strings
+- "content": Full structured markdown note text including headers (#, ##, ###), bold key terms, tables, and revision bullet points.`;
+
+    const response = await generateContentWithFallback(ai, {
+      contents: prompt,
+      config: {
+        systemInstruction,
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            title: { type: Type.STRING },
+            folder: { type: Type.STRING },
+            tags: { type: Type.ARRAY, items: { type: Type.STRING } },
+            content: { type: Type.STRING }
+          },
+          required: ["title", "folder", "tags", "content"]
+        }
+      }
+    });
+
+    const noteData = JSON.parse(response.text || "{}");
+    return res.json({ note: noteData });
+  } catch (error: any) {
+    console.error("Error in /api/ai/generate-topic-note:", error);
+    // Fallback topic note generator
+    const { topic, folder = "General Studies" } = req.body;
+    const todayStr = new Date().toISOString().split("T")[0];
+    const fallbackNote = {
+      title: `${topic} - Exhaustive Study Notes`,
+      folder: folder,
+      tags: [folder, "AI Generated", "Exam Revision"],
+      content: `# ${topic}\n\n> **Subject Folder:** ${folder} | **Generated On:** ${todayStr}\n\n## Executive Summary\n${topic} is a crucial high-yield topic in the competitive examination syllabus. Understanding its core pillars, legal/statutory guidelines, and current context is essential for both Prelims and Mains.\n\n## Core Conceptual Foundations\n1. **Fundamental Definition:** Core principles governing ${topic} and its strategic role in national development.\n2. **Nodal Authority & Framework:** Supervised by statutory bodies, nodal ministries, and constitutional provisions.\n3. **Key Objectives:** Promoting administrative efficiency, economic growth, and social equity.\n\n## High-Yield Prelims Fact Matrix\n- **Primary Act / Article:** Relevant constitutional or statutory mandate for ${topic}.\n- **Key Metrics:** Official parameters and performance indicators.\n- **Significance:** Frequently asked in objective questions regarding jurisdictions and exemptions.\n\n## Mains Analytical Dimensions & Way Forward\n- **Major Strengths:** Enhances transparency, strengthens institutional governance.\n- **Challenges & Bottlenecks:** Execution delays, funding gaps, and inter-state coordination.\n- **Way Forward:** Recommendation of committee reports and global best practices.\n\n> **⚡ Fast 2-Minute Revision:** Review primary provisions, nodal ministries, and recent amendments prior to solving PYQs.`
+    };
+    return res.json({ note: fallbackNote, fallbackMode: true });
+  }
+});
+
 // Vite Middleware & Static Server
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {

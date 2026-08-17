@@ -4,6 +4,34 @@ export async function generateAIExplanation(topic: string, prompt?: string): Pro
   return sendAIChatRequest(prompt || topic, 'UPSC & All Exams', 'explain');
 }
 
+export async function generateAITopicNote(
+  topic: string,
+  folder: string = 'Polity',
+  targetExam: string = 'UPSC Civil Services'
+): Promise<{ title: string; folder: string; tags: string[]; content: string }> {
+  try {
+    const res = await fetch('/api/ai/generate-topic-note', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic, folder, targetExam })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    return data.note;
+  } catch (err: any) {
+    console.warn('generateAITopicNote fallback:', err);
+    return {
+      title: `${topic} - Digital Notes`,
+      folder: folder,
+      tags: [folder, 'AI Notes', 'Revision'],
+      content: `# ${topic}\n\n> **Folder:** ${folder} | **Subject:** High-Yield Syllabus Topic\n\n## Core Overview\n${topic} is an essential component of the ${targetExam} syllabus. Mastery of statutory provisions, landmark Supreme Court / Committee reports, and recent developments is critical.\n\n## Key Exam Dimensions\n1. **Constitutional & Statutory Mandate:** Legal provisions, articles, and nodal ministries.\n2. **Prelims Facts:** Specific data points, eligibility metrics, and statutory status.\n3. **Mains Analytical Framework:** Key strengths, administrative challenges, and reform recommendations.\n\n> **Fast Revision Tip:** Solve recent PYQs on ${topic} to test retention.`
+    };
+  }
+}
+
 export async function sendAIChatRequest(
   prompt: string,
   exam: string,

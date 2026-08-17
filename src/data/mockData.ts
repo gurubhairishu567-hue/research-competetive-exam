@@ -1195,60 +1195,329 @@ export const SAMPLE_MOCK_TESTS: MockTest[] = [
 
 export const SAMPLE_NOTES: NoteItem[] = [
   {
-    id: 'note-1',
-    title: 'Fundamental Rights - Articles 12 to 35 Quick Revision',
-    folder: 'Indian Polity',
-    tags: ['Polity', 'UPSC', 'Constitutional Rights'],
+    id: 'note-polity-1',
+    title: 'Fundamental Rights - Articles 12 to 35 Comprehensive Revision',
+    folder: 'Polity & Governance',
+    tags: ['Polity', 'Constitutional Rights', 'Part III', 'Articles 12-35'],
     isBookmarked: true,
     content: `# Fundamental Rights (Part III of Constitution)
 
-Derived from the **US Bill of Rights**. Magna Carta of India.
+> **Folder:** Polity & Governance | **Source:** Constitutional Text & Landmark Precedents
 
-## Key Features
-- **Justiciable:** Directly enforceable in Supreme Court under Article 32.
-- **Not Absolute:** Subject to reasonable restrictions (e.g., public order, morality, security of state).
-- **Suspension:** Suspended during National Emergency (Article 352) except **Articles 20 & 21** which can NEVER be suspended.
+Derived from the **US Bill of Rights**. Known as the **Magna Carta of India**.
+
+## Key Features & Legal Status
+- **Justiciable:** Directly enforceable in Supreme Court under Article 32 and High Courts under Article 226.
+- **Not Absolute:** Subject to reasonable restrictions (e.g., public order, morality, sovereignty, and security of state).
+- **Suspension:** Suspended during National Emergency (Article 352) except **Articles 20 & 21** which can NEVER be suspended (44th Amendment Act, 1978).
 
 ## Six Fundamental Rights Categories
 1. **Right to Equality (Articles 14-18)**
-   - Art 14: Equality before law & Equal protection of laws
-   - Art 15: Prohibition of discrimination on grounds of religion, race, caste, sex or place of birth
-   - Art 16: Equality of opportunity in public employment
-   - Art 17: Abolition of Untouchability
-   - Art 18: Abolition of Titles
+   - **Art 14:** Equality before law & Equal protection of laws
+   - **Art 15:** Prohibition of discrimination on grounds of religion, race, caste, sex or place of birth
+   - **Art 16:** Equality of opportunity in public employment
+   - **Art 17:** Abolition of Untouchability (Strict statutory enforcement via PCR Act 1955)
+   - **Art 18:** Abolition of Titles (Except military and academic distinctions)
 2. **Right to Freedom (Articles 19-22)**
-   - Art 19: Six basic freedoms (Speech, Assembly, Association, Movement, Residence, Profession)
-   - Art 20: Protection in respect of conviction for offences (No ex-post facto, No double jeopardy, No self-incrimination)
-   - Art 21: Protection of Life and Personal Liberty (Maneka Gandhi case expanded scope)
-   - Art 21A: Right to Education (86th Amendment 2002)
-   - Art 22: Protection against arrest and detention
+   - **Art 19:** Six basic freedoms (Speech, Assembly, Association, Movement, Residence, Profession)
+   - **Art 20:** Protection in respect of conviction for offences (No ex-post facto, No double jeopardy, No self-incrimination)
+   - **Art 21:** Protection of Life and Personal Liberty (*Maneka Gandhi Case 1978* expanded to include Right to Clean Environment, Privacy, Dignity)
+   - **Art 21A:** Right to Education (86th Amendment Act 2002)
+   - **Art 22:** Protection against arrest and preventive detention
 3. **Right against Exploitation (Articles 23-24)**
+   - **Art 23:** Prohibition of human trafficking & forced labor (Begar)
+   - **Art 24:** Prohibition of employment of children in hazardous factories
 4. **Right to Freedom of Religion (Articles 25-28)**
+   - **Art 25:** Freedom of conscience and free profession, practice, and propagation of religion
+   - **Art 26:** Freedom to manage religious affairs
 5. **Cultural and Educational Rights (Articles 29-30)**
-6. **Right to Constitutional Remedies (Article 32)** - Heart & Soul of Constitution (Dr. Ambedkar).`,
+   - **Art 29:** Protection of language, script, and culture of minorities
+   - **Art 30:** Right of minorities to establish and administer educational institutions
+6. **Right to Constitutional Remedies (Article 32)** - Termed the *"Heart and Soul of the Constitution"* by Dr. B.R. Ambedkar. Five Writs: Habeas Corpus, Mandamus, Prohibition, Quo-Warranto, Certiorari.`,
     createdAt: '2026-08-01',
     updatedAt: '2026-08-09'
   },
   {
-    id: 'note-2',
-    title: 'Monetary Policy Tools & Repo Rate Dynamics',
-    folder: 'Indian Economy',
-    tags: ['Economy', 'RBI', 'Banking'],
+    id: 'note-polity-2',
+    title: 'Directive Principles of State Policy (DPSP) & Fundamental Duties',
+    folder: 'Polity & Governance',
+    tags: ['Polity', 'DPSP', 'Part IV', 'Article 51A'],
     isBookmarked: false,
+    content: `# Directive Principles of State Policy & Fundamental Duties
+
+> **Folder:** Polity & Governance | **Focus:** Social & Economic Democracy
+
+## Directive Principles (Part IV: Articles 36–51)
+Borrowed from the **Irish Constitution**. Non-justiciable in court, but fundamental in the governance of the country.
+
+### Classification of DPSPs
+1. **Socialistic Principles:**
+   - **Art 38:** Promote welfare of people by securing a social order permeated by justice.
+   - **Art 39:** Equal pay for equal work, securing adequate means of livelihood.
+   - **Art 39A:** Equal justice and free legal aid to the poor.
+   - **Art 41:** Right to work, education, and public assistance in certain cases.
+2. **Gandhian Principles:**
+   - **Art 40:** Organize Village Panchayats as units of self-government.
+   - **Art 43:** Promote cottage industries on individual or cooperative basis.
+   - **Art 46:** Promote educational and economic interests of SCs, STs, and weaker sections.
+   - **Art 47:** Prohibition of intoxicating drinks and health-injurious drugs.
+3. **Liberal-Intellectual Principles:**
+   - **Art 44:** Uniform Civil Code (UCC) throughout India.
+   - **Art 48A:** Protection of environment, forests, and wild animals.
+   - **Art 50:** Separation of Judiciary from Executive.
+   - **Art 51:** Promotion of international peace and security.
+
+## Fundamental Duties (Part IVA: Article 51A)
+- Added by the **42nd Amendment Act, 1976** on the recommendation of the **Swaran Singh Committee**.
+- Originally 10 duties; **11th duty** (Right to Education for children aged 6-14) added by **86th Amendment, 2002**.
+- **Verma Committee (1999):** Identified legal provisions for enforcement of certain duties (e.g., Prevention of Insults to National Honour Act).`,
+    createdAt: '2026-08-02',
+    updatedAt: '2026-08-08'
+  },
+  {
+    id: 'note-eco-1',
+    title: 'RBI Monetary Policy Framework & Liquidity Management Tools',
+    folder: 'Indian Economy',
+    tags: ['Economy', 'Monetary Policy', 'RBI', 'Repo Rate'],
+    isBookmarked: true,
     content: `# RBI Monetary Policy Framework
 
-## Quantitative Tools
-- **Repo Rate:** Rate at which RBI lends short-term money to commercial banks against government securities.
-- **Reverse Repo Rate:** Rate at which banks deposit surplus funds with RBI.
-- **Standing Deposit Facility (SDF):** Uncollateralized liquidity absorption mechanism.
-- **Marginal Standing Facility (MSF):** Emergency overnight borrowing facility for banks at penal interest rate.
-- **CRR (Cash Reserve Ratio):** Percentage of NDTL that banks must hold as cash reserves with RBI (no interest paid).
-- **SLR (Statutory Liquidity Ratio):** Percentage of NDTL held in liquid assets (Gold, Govt Securities, Cash).
+> **Folder:** Indian Economy | **Nodal Agency:** Reserve Bank of India (RBI)
+
+## Monetary Policy Committee (MPC)
+- Statutory body constituted under **Section 45ZB of RBI Act, 1934**.
+- **Composition:** 6 members (3 from RBI including Governor as ex-officio Chairperson, 3 nominated by Govt of India).
+- **Targeting:** Flexible Inflation Targeting (FIT) framework — **4% (+/- 2%) CPI inflation**.
+
+## Quantitative Tools Matrix
+- **Repo Rate:** Rate at which RBI lends short-term funds to commercial banks against government securities.
+- **Reverse Repo Rate / SDF:** Standing Deposit Facility (SDF) absorbs surplus liquidity without requiring collateral.
+- **Marginal Standing Facility (MSF):** Penal rate at which banks can borrow overnight from RBI against SLR securities.
+- **Cash Reserve Ratio (CRR):** Share of Net Demand and Time Liabilities (NDTL) banks must keep with RBI in cash. No interest earned.
+- **Statutory Liquidity Ratio (SLR):** Share of NDTL banks must maintain in liquid assets (Govt securities, gold, cash).
 
 ## Qualitative Tools
-- Moral Suasion, Margin Requirements, Credit Rationing.`,
+- Moral suasion, credit rationing, margin requirements, and direct action.`,
     createdAt: '2026-08-04',
     updatedAt: '2026-08-07'
+  },
+  {
+    id: 'note-eco-2',
+    title: 'Union Budgeting, Fiscal Deficit Metrics & FRBM Act',
+    folder: 'Indian Economy',
+    tags: ['Economy', 'Fiscal Policy', 'Union Budget', 'FRBM'],
+    isBookmarked: false,
+    content: `# Fiscal Policy, Union Budgeting & FRBM Framework
+
+> **Folder:** Indian Economy | **Constitutional Authority:** Article 112 (Annual Financial Statement)
+
+## Structure of Union Budget
+1. **Revenue Account:**
+   - **Revenue Receipts:** Tax Revenue (GST, Income Tax, Corporate Tax) + Non-Tax Revenue (Dividends, Fees, Interest).
+   - **Revenue Expenditure:** Non-asset creating expenses (Salaries, Pensions, Interest Payments, Subsidies).
+2. **Capital Account:**
+   - **Capital Receipts:** Debt receipts (Market borrowings) + Non-debt receipts (Disinvestment, Recovery of loans).
+   - **Capital Expenditure (CapEx):** Asset creating investments (Highways, Railways, Defence equipment).
+
+## Key Deficit Formulas
+- **Fiscal Deficit =** Total Expenditure - Total Receipts (excluding Borrowings).
+- **Revenue Deficit =** Revenue Expenditure - Revenue Receipts.
+- **Primary Deficit =** Fiscal Deficit - Interest Payments.
+
+## FRBM Act 2003 & NK Singh Committee Recommendations
+- Target Fiscal Deficit: **3% of GDP**.
+- Target Debt-to-GDP ratio: **60% combined** (40% Centre, 20% States).
+- **Escape Clause:** Allows fiscal relaxation up to 0.5% during national emergency, war, agricultural collapse, or structural economic reform.`,
+    createdAt: '2026-08-05',
+    updatedAt: '2026-08-10'
+  },
+  {
+    id: 'note-hist-1',
+    title: 'Indus Valley Civilization (IVC) - Urban Planning & Major Sites',
+    folder: 'History & Culture',
+    tags: ['History', 'Ancient India', 'IVC', 'Harappa'],
+    isBookmarked: true,
+    content: `# Indus Valley Civilization (c. 2500 BCE – 1900 BCE)
+
+> **Folder:** History & Culture | **Period:** Bronze Age Civilization
+
+## Salient Features
+- **Grid Pattern City Planning:** Streets intersected at right angles (North-South, East-West).
+- **Advanced Drainage System:** Covered burnt-brick drains with inspection traps in every street.
+- **Citadel vs Lower Town:** Citadel raised on mud-brick platform for administrative/public functions.
+- **Economy & Trade:** Seal impressions (*Pashupati Seal*, *Steatite Seals*), standardization of weights and measures (binary & decimal systems), maritime trade with Mesopotamia (Meluhha).
+
+## Major Sites & Archaeological Key Discoveries
+- **Harappa (Ravi River, Pakistan):** 6 granaries in a row, bronze dancing figurine, coffin burials.
+- **Mohenjo-daro (Indus River, Pakistan):** Great Bath, Great Granary, Assembly Hall, Priest-King statue, Bearded Man.
+- **Lothal (Bhogavo River, Gujarat):** Tidal dockyard, fire altars, ivory scale, double burial.
+- **Dholavira (Rann of Kutch, Gujarat):** UNESCO World Heritage Site, unique 3-tier city division, massive water reservoir system, giant stadium signboard script.
+- **Kalibangan (Ghaggar River, Rajasthan):** Ploughed field surface, wooden drainage, fire altars.
+- **Rakhigarhi (Haryana):** Largest IVC site in India; DNA research on Harappan remains.`,
+    createdAt: '2026-08-03',
+    updatedAt: '2026-08-08'
+  },
+  {
+    id: 'note-hist-2',
+    title: 'Indian National Movement - Non-Cooperation to Quit India (1920-1942)',
+    folder: 'History & Culture',
+    tags: ['History', 'Modern India', 'Freedom Movement', 'Gandhian Era'],
+    isBookmarked: false,
+    content: `# Gandhian Mass Movements & Freedom Struggle
+
+> **Folder:** History & Culture | **Focus:** Modern Indian History (1920-1942)
+
+## 1. Non-Cooperation Movement (1920-1922)
+- **Background:** Rowlatt Act 1919, Jallianwala Bagh Massacre, Khilafat Movement.
+- **Resolution:** Passed at Nagpur Session of INC (1920).
+- **Programme:** Surrender of titles, boycott of British courts, schools, foreign clothes; promotion of Charkha and Swadeshi.
+- **Withdrawal:** Suspended by Gandhiji in Feb 1922 following the **Chauri Chaura incident** (burning of police station in Gorakhpur).
+
+## 2. Civil Disobedience Movement (1930-1934)
+- **Background:** Simon Commission boycott, Lahore Session 1929 (*Poorna Swaraj* resolution), 11 Demands of Gandhiji.
+- **Dandi March (Salt Satyagraha):** March 12 to April 6, 1930 (Sabarmati to Dandi, 240 miles). Broke salt law.
+- **Gandhi-Irwin Pact (1931):** Participation in 2nd Round Table Conference, release of non-violent prisoners.
+
+## 3. Quit India Movement (1942)
+- **Background:** Failure of Cripps Mission (1942), World War II economic distress, fear of Japanese invasion.
+- **Wardha Resolution & Gowalia Tank (Mumbai):** Aug 8, 1942. Mantra: *"Do or Die"* (*Karo ya Maro*).
+- **Parallel Governments:** Established in Ballia (Chittu Pandey), Tamluk (Jatiya Sarkar), Satara (Prati Sarkar).
+- **Underground Network:** Led by Aruna Asaf Ali, Jayaprakash Narayan, Ram Manohar Lohia, Usha Mehta (Secret Congress Radio).`,
+    createdAt: '2026-08-04',
+    updatedAt: '2026-08-11'
+  },
+  {
+    id: 'note-geo-1',
+    title: 'Indian Monsoon System - Mechanism, El Niño & IOD Dynamics',
+    folder: 'Geography',
+    tags: ['Geography', 'Climatology', 'Monsoon', 'El Nino'],
+    isBookmarked: true,
+    content: `# Indian Monsoon Climate & Oceanic Teleconnections
+
+> **Folder:** Geography | **Sub-Field:** Physical & Indian Climatology
+
+## Classical vs Modern Monsoon Concepts
+1. **Thermal Theory (Halley):** Differential heating of landmass (Asian interior) and Indian Ocean creates low-pressure trough over North India.
+2. **ITCZ Migration Concept:** Seasonal shift of Inter-Tropical Convergence Zone (ITCZ) over the Indo-Gangetic plain (*Monsoon Trough*).
+3. **Jet Stream Theory:** Retreat of Subtropical Westerly Jet Stream (STWJ) to the north of Himalayas and onset of Tropical Easterly Jet Stream (TEJ) over South India.
+
+## Major Drivers & Teleconnections
+- **El Niño Southern Oscillation (ENSO):**
+  - **El Niño:** Warming of central/eastern equatorial Pacific. Suppresses Walker Circulation over Indian Ocean -> Reduces Indian monsoon rainfall.
+  - **La Niña:** Cooling of equatorial eastern Pacific -> Stronger Walker Circulation -> Above-normal Indian monsoon.
+- **Indian Ocean Dipole (IOD):**
+  - **Positive IOD:** Western Indian Ocean warmer than Eastern Indian Ocean -> Brings good rainfall to India (can offset negative El Niño effects).
+  - **Negative IOD:** Cooler western Indian Ocean -> Suppresses monsoon.`,
+    createdAt: '2026-08-02',
+    updatedAt: '2026-08-09'
+  },
+  {
+    id: 'note-env-1',
+    title: 'Biodiversity Conservation - Wildlife Protection Act & Protected Area Network',
+    folder: 'Environment & Ecology',
+    tags: ['Environment', 'WPA 1972', 'National Parks', 'Biodiversity'],
+    isBookmarked: true,
+    content: `# Biodiversity Conservation Architecture in India
+
+> **Folder:** Environment & Ecology | **Statute:** Wildlife Protection Act, 1972 (Amended 2022)
+
+## Wildlife Protection Act (WPA), 1972 Key Features
+- **Schedules Restructuring (2022 Amendment):** Consolidated 6 schedules into **4 Schedules**:
+  - **Schedule I:** Highest protection for animal species (Tigers, Elephants, Rhinos, Lion-tailed Macaque).
+  - **Schedule II:** Animal species with lesser penalties.
+  - **Schedule III:** Protected Plant species.
+  - **Schedule IV:** CITES specimens.
+  - *Vermin category removed;* Central Govt can declare specific species as vermin via notification.
+
+## Protected Area Categories
+1. **National Parks:** Highest protection. No human activity/grazing allowed without Chief Wildlife Warden approval. Created by State Govt via notification.
+2. **Wildlife Sanctuaries:** Certain traditional rights (e.g., grazing, firewood collection) permitted.
+3. **Conservation Reserves:** Govt-owned land adjacent to parks/sanctuaries declared in consultation with local communities.
+4. **Community Reserves:** Privately or community-owned land volunteered for wildlife conservation.
+
+## Statutory Environmental Bodies
+- **National Board for Wildlife (NBWL):** Chaired by the **Prime Minister of India**.
+- **National Tiger Conservation Authority (NTCA):** Statutory body under Ministry of Environment, Forest and Climate Change (MoEFCC) administering **Project Tiger**.
+- **Central Zoo Authority (CZA):** Regulates zoo infrastructure and captive breeding.`,
+    createdAt: '2026-08-03',
+    updatedAt: '2026-08-10'
+  },
+  {
+    id: 'note-scitech-1',
+    title: 'Space Technology - ISRO Gaganyaan, Chandrayaan & Satellite Orbits',
+    folder: 'Science & Technology',
+    tags: ['Science & Tech', 'ISRO', 'Gaganyaan', 'Space'],
+    isBookmarked: false,
+    content: `# Indian Space Programme & Orbital Dynamics
+
+> **Folder:** Science & Technology | **Agency:** Indian Space Research Organisation (ISRO)
+
+## Flagship ISRO Missions
+1. **Gaganyaan Mission:**
+   - India's first human spaceflight programme. Target: Send 3-member crew to **400 km Low Earth Orbit (LEO)** for 3 days.
+   - Launch Vehicle: **LVM3 (GSLV Mk III)** human-rated rocket.
+   - **Vyommitra:** Female humanoid robot for uncrewed test flights.
+2. **Chandrayaan-3:**
+   - Successfully soft-landed *Vikram Lander* and *Pragyan Rover* near the **Lunar South Pole** (Shiv Shakti Point).
+   - India became 4th country to soft-land on Moon and 1st near South Pole.
+3. **Aditya-L1:**
+   - India's first solar observatory stationed at **Lagrange Point 1 (L1)**, ~1.5 million km from Earth.
+   - Studies solar corona, coronal mass ejections (CME), and space weather.
+
+## Satellite Orbit Types
+- **Low Earth Orbit (LEO):** 160 km to 2,000 km. Used for remote sensing, Earth observation, ISS.
+- **Geostationary Orbit (GEO):** ~35,786 km above equator. Orbital period = 24 hours. Used for telecommunication and weather forecasting.
+- **Sun-Synchronous Orbit (SSO):** Polar orbit where satellite passes over any given point of Earth's surface at the same local solar time.`,
+    createdAt: '2026-08-06',
+    updatedAt: '2026-08-11'
+  },
+  {
+    id: 'note-ca-1',
+    title: 'Digital Public Infrastructure (DPI) & India Stack Global Adoption',
+    folder: 'Current Affairs & IR',
+    tags: ['Current Affairs', 'DPI', 'India Stack', 'UPI', 'DigiLocker'],
+    isBookmarked: true,
+    content: `# Digital Public Infrastructure (DPI) & India Stack
+
+> **Folder:** Current Affairs & IR | **Framework:** Tech-Enabled Inclusive Growth
+
+## Three Pillars of India Stack
+1. **Identity Layer:** Aadhaar (Biometric digital identity for 1.4B residents).
+2. **Payments Layer:** Unified Payments Interface (UPI) developed by NPCI + Aadhaar Enabled Payment System (AePS).
+3. **Data Exchange Layer:** Account Aggregator (AA) framework + DigiLocker + ONdC (Open Network for Digital Commerce).
+
+## Global Significance & Impact
+- **Financial Inclusion:** Pradhan Mantri Jan Dhan Yojana (PMJDY) + JAM Trinity reduced unbanked population dramatically.
+- **Cross-Border Interoperability:** UPI integrated with Singapore's PayNow, UAE's Jaywan, Nepal, Sri Lanka, Mauritius, and France (Eiffel Tower).
+- **G20 Consensus:** Under India's G20 Presidency, "Digital Public Infrastructure" was formally endorsed in the New Delhi Leaders' Declaration as a global engine for SDGs.`,
+    createdAt: '2026-08-07',
+    updatedAt: '2026-08-12'
+  },
+  {
+    id: 'note-ethics-1',
+    title: 'Ethics in Public Administration - Foundational Values of Civil Services',
+    folder: 'Ethics & Governance',
+    tags: ['Ethics', 'GS Paper 4', 'Civil Services', 'Probity'],
+    isBookmarked: false,
+    content: `# Foundational Values for Civil Services (Nolan Committee Framework)
+
+> **Folder:** Ethics & Governance | **Focus:** UPSC GS Paper 4
+
+## Nolan Committee 7 Principles of Public Life
+1. **Selflessness:** Holders of public office should take decisions solely in terms of public interest.
+2. **Integrity:** Avoid placing themselves under any financial or other obligation to outside individuals or organizations.
+3. **Objectivity:** Decisions made on merit, including making public appointments, awarding contracts, or recommending rewards.
+4. **Accountability:** Accountable for their decisions and actions to the public and submit themselves to scrutiny.
+5. **Openness:** Open about all decisions and actions taken.
+6. **Honesty:** Duty to declare private interests relating to public duties.
+7. **Leadership:** Promote and support these principles by leadership and example.
+
+## Core Values for Indian Bureaucracy (ARC 2 Report)
+- **Anonymity & Neutrality:** Remaining politically neutral and non-partisan across government transitions.
+- **Empathy & Compassion:** Special sensitivity towards weaker sections (SCs, STs, women, elderly, differently-abled).
+- **Dedication to Public Service:** Unwavering commitment without expecting personal praise or external gain.`,
+    createdAt: '2026-08-05',
+    updatedAt: '2026-08-09'
   }
 ];
 

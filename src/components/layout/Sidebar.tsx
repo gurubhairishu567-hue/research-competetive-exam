@@ -20,6 +20,8 @@ import {
   Bot,
   ShieldCheck,
   LogIn,
+  Sun,
+  Moon,
   X
 } from 'lucide-react';
 
@@ -29,7 +31,7 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile }) => {
-  const { currentPage, setCurrentPage } = useApp();
+  const { currentPage, setCurrentPage, theme, toggleTheme } = useApp();
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -106,13 +108,42 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile })
         })}
       </div>
 
-      {/* Footer Info Box */}
-      <div className="p-3 m-3 rounded-xl bg-slate-800/80 border border-slate-700/60 text-[11px] text-slate-400">
-        <div className="flex items-center justify-between font-semibold text-slate-200 mb-1">
-          <span>Target Exam</span>
-          <span className="text-[10px] text-emerald-400 font-mono font-bold">ACTIVE</span>
+      {/* Theme Toggle & Footer Info Box */}
+      <div className="p-3 m-3 space-y-2">
+        {/* Light / Dark Mode Toggle Pill */}
+        <div className="p-1 rounded-xl bg-slate-800/90 border border-slate-700 flex items-center justify-between text-xs">
+          <button
+            onClick={() => theme === 'dark' && toggleTheme()}
+            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 font-bold transition ${
+              theme === 'light'
+                ? 'bg-amber-500 text-slate-950 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Sun className="w-3.5 h-3.5" />
+            <span className="text-[11px]">Light</span>
+          </button>
+          <button
+            onClick={() => theme === 'light' && toggleTheme()}
+            className={`flex-1 py-1.5 rounded-lg flex items-center justify-center gap-1.5 font-bold transition ${
+              theme === 'dark'
+                ? 'bg-indigo-600 text-white shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Moon className="w-3.5 h-3.5" />
+            <span className="text-[11px]">Dark</span>
+          </button>
         </div>
-        <p className="text-slate-300 text-[11px] truncate font-medium">UPSC Civil Services</p>
+
+        {/* Footer Info Box */}
+        <div className="p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-[11px] text-slate-400">
+          <div className="flex items-center justify-between font-semibold text-slate-200 mb-0.5">
+            <span>Target Exam</span>
+            <span className="text-[10px] text-emerald-400 font-mono font-bold">ACTIVE</span>
+          </div>
+          <p className="text-slate-300 text-[11px] truncate font-medium">UPSC Civil Services</p>
+        </div>
       </div>
 
     </div>
