@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { UserProfile, Exam, CurrentAffairItem, Question, NoteItem, Flashcard, StudyPlan, ResourceItem, MockTest } from '../types';
 import { INITIAL_USER_PROFILE, SAMPLE_EXAMS, SAMPLE_CURRENT_AFFAIRS, SAMPLE_QUESTIONS, SAMPLE_NOTES, SAMPLE_FLASHCARDS, SAMPLE_RESOURCES, SAMPLE_STUDY_PLAN, SAMPLE_MOCK_TESTS } from '../data/mockData';
+import { FestivalThemeId, getAutoDetectedSeasonalTheme } from '../data/festivalThemes';
 import { 
   saveToSupabase, 
   loadFromSupabase, 
@@ -68,6 +69,18 @@ interface AppContextType {
   setUser: React.Dispatch<React.SetStateAction<UserProfile>>;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
+  // Seasonal & Indian Festival Theme Controls
+  festivalTheme: FestivalThemeId;
+  setFestivalTheme: (t: FestivalThemeId) => void;
+  effectiveFestivalTheme: FestivalThemeId;
+  isSeasonalEffectsEnabled: boolean;
+  setIsSeasonalEffectsEnabled: (enabled: boolean) => void;
+  // Auth Modal Controls
+  showAuthModal: boolean;
+  setShowAuthModal: (show: boolean) => void;
+  authModalMode: 'login' | 'signup';
+  setAuthModalMode: (mode: 'login' | 'signup') => void;
+  openAuthModal: (mode?: 'login' | 'signup') => void;
   currentPage: string;
   setCurrentPage: (page: string, params?: Record<string, any>) => void;
   pageParams: Record<string, any>;
@@ -187,6 +200,39 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (saved === 'dark' || saved === 'light') return saved;
     return 'light';
   });
+
+  // Seasonal & Festival Theme Engine State
+  const [festivalTheme, setFestivalThemeState] = useState<FestivalThemeId>(() => {
+    const saved = localStorage.getItem('examnexus_festival_theme');
+    return (saved as FestivalThemeId) || 'auto';
+  });
+
+  const [isSeasonalEffectsEnabled, setIsSeasonalEffectsEnabledState] = useState<boolean>(() => {
+    const saved = localStorage.getItem('examnexus_seasonal_effects');
+    return saved !== null ? saved === 'true' : true;
+  });
+
+  const setFestivalTheme = (t: FestivalThemeId) => {
+    setFestivalThemeState(t);
+    localStorage.setItem('examnexus_festival_theme', t);
+  };
+
+  const setIsSeasonalEffectsEnabled = (enabled: boolean) => {
+    setIsSeasonalEffectsEnabledState(enabled);
+    localStorage.setItem('examnexus_seasonal_effects', String(enabled));
+  };
+
+  // Compute effective active theme (if auto, calculate based on current date)
+  const effectiveFestivalTheme = festivalTheme === 'auto' ? getAutoDetectedSeasonalTheme() : festivalTheme;
+
+  // Auth Modal State
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
+
+  const openAuthModal = (mode: 'login' | 'signup' = 'login') => {
+    setAuthModalMode(mode);
+    setShowAuthModal(true);
+  };
 
   const [currentPage, setCurrentPageState] = useState<string>('home');
   const [pageParams, setPageParams] = useState<Record<string, any>>({});
@@ -824,6 +870,16 @@ Source: Economic Division, Ministry of Finance (indiabudget.gov.in/economicsurve
         setUser,
         theme,
         toggleTheme,
+        festivalTheme,
+        setFestivalTheme,
+        effectiveFestivalTheme,
+        isSeasonalEffectsEnabled,
+        setIsSeasonalEffectsEnabled,
+        showAuthModal,
+        setShowAuthModal,
+        authModalMode,
+        setAuthModalMode,
+        openAuthModal,
         currentPage,
         setCurrentPage,
         pageParams,

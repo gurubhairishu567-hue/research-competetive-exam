@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { SUPABASE_SETUP_SQL, SUPABASE_URL, testSupabaseConnection } from '../lib/supabase';
+import { SUPABASE_SETUP_SQL, SUPABASE_URL, testSupabaseConnection, createResourceInSupabase } from '../lib/supabase';
 import { 
   ShieldCheck, Plus, Users, Award, BookOpen, CheckCircle2, 
   Database, Copy, Check, Terminal, ExternalLink, RefreshCw, 
-  AlertCircle, ShieldAlert, Key, Sparkles, Server
+  AlertCircle, ShieldAlert, Key, Sparkles, Server, Landmark,
+  Library, FileText
 } from 'lucide-react';
 
 export const AdminPage: React.FC = () => {
@@ -18,7 +19,7 @@ export const AdminPage: React.FC = () => {
     supabaseStatus 
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'stats' | 'add-ca' | 'add-q' | 'supabase-sql'>('supabase-sql');
+  const [activeTab, setActiveTab] = useState<'stats' | 'add-ca' | 'add-q' | 'add-res' | 'supabase-sql'>('supabase-sql');
 
   // Form states
   const [caTitle, setCaTitle] = useState('');
@@ -34,6 +35,15 @@ export const AdminPage: React.FC = () => {
   const [qOptD, setQOptD] = useState('');
   const [qCorrect, setQCorrect] = useState(0);
   const [qExplanation, setQExplanation] = useState('');
+
+  // Resource Form States
+  const [resTitle, setResTitle] = useState('');
+  const [resCategory, setResCategory] = useState('Parliament Bill');
+  const [resAuthor, setResAuthor] = useState('Ministry of Law & Justice');
+  const [resExam, setResExam] = useState('UPSC CSE & State PCS');
+  const [resDesc, setResDesc] = useState('');
+  const [resDownloadUrl, setResDownloadUrl] = useState('');
+  const [resBuyUrl, setResBuyUrl] = useState('');
 
   // SQL Studio State
   const [isCopied, setIsCopied] = useState(false);
@@ -102,6 +112,30 @@ export const AdminPage: React.FC = () => {
     setQExplanation('');
   };
 
+  const handleAddResource = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resTitle.trim()) return;
+
+    const newRes = {
+      id: `res-${Date.now()}`,
+      title: resTitle.trim(),
+      category: resCategory,
+      author: resAuthor.trim() || 'Ministry/Admin',
+      exam: [resExam],
+      description: resDesc.trim(),
+      download_url: resDownloadUrl.trim() || 'https://sansad.in',
+      read_url: resBuyUrl.trim() || 'https://www.amazon.in'
+    };
+
+    await createResourceInSupabase(newRes, user?.email || 'gurubhairishu567@gmail.com');
+    alert(`Resource "${resTitle}" successfully added & synced to Supabase database!`);
+
+    setResTitle('');
+    setResDesc('');
+    setResDownloadUrl('');
+    setResBuyUrl('');
+  };
+
   return (
     <div className="space-y-8 pb-12">
       
@@ -150,6 +184,7 @@ export const AdminPage: React.FC = () => {
           { id: 'supabase-sql', label: '⚡ Supabase SQL Setup & Code', icon: Database },
           { id: 'add-ca', label: '+ Publish Current Affairs', icon: Plus },
           { id: 'add-q', label: '+ Add Practice Question', icon: Plus },
+          { id: 'add-res', label: '+ Add Resource / Act / Book', icon: Landmark },
           { id: 'stats', label: 'Platform Analytics', icon: Users },
         ].map(t => {
           const Icon = t.icon;
@@ -379,6 +414,72 @@ export const AdminPage: React.FC = () => {
           <button type="submit" className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold shadow-md flex items-center gap-2">
             <Plus className="w-4 h-4" />
             <span>Publish MCQ & Sync Database</span>
+          </button>
+        </form>
+      )}
+
+      {/* ADD LIBRARY RESOURCE / ACT / BOOK FORM TAB */}
+      {activeTab === 'add-res' && (
+        <form onSubmit={handleAddResource} className="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-md space-y-5 text-xs">
+          <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-700">
+            <Landmark className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+            <h2 className="text-base font-black text-slate-900 dark:text-white">
+              Add New Parliament Bill, Official Govt Report, NCERT, or Standard Book
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700 dark:text-slate-300">Resource Title / Act Name:</label>
+              <input value={resTitle} onChange={e => setResTitle(e.target.value)} required placeholder="e.g. Disaster Management (Amendment) Act, 2024" className="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700 dark:text-slate-300">Category / Type:</label>
+              <select value={resCategory} onChange={e => setResCategory(e.target.value)} className="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Parliament Bill">Parliament Bill (Pending / JPC)</option>
+                <option value="Passed Act">Parliament Passed Act / Law</option>
+                <option value="Constitutional Amendment">Constitutional Amendment (CAA)</option>
+                <option value="Govt Official Report">Govt Official Report (Budget/NITI)</option>
+                <option value="NCERT Textbook">NCERT Textbook (Class 6-12)</option>
+                <option value="Standard Reference Book">Standard Reference Book</option>
+                <option value="Custom PDF Document">Custom PDF Vault Document</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700 dark:text-slate-300">Ministry / Author / Publisher:</label>
+              <input value={resAuthor} onChange={e => setResAuthor(e.target.value)} required placeholder="e.g. Ministry of Home Affairs / M. Laxmikanth" className="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700 dark:text-slate-300">Target Exam Relevance:</label>
+              <input value={resExam} onChange={e => setResExam(e.target.value)} required placeholder="e.g. UPSC CSE, State PCS, Judiciary" className="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700 dark:text-slate-300">Download / Official Portal URL:</label>
+              <input value={resDownloadUrl} onChange={e => setResDownloadUrl(e.target.value)} placeholder="https://sansad.in or direct PDF URL" className="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-bold text-slate-700 dark:text-slate-300">Store / Buy Link (Amazon / Flipkart):</label>
+              <input value={resBuyUrl} onChange={e => setResBuyUrl(e.target.value)} placeholder="https://www.amazon.in/dp/..." className="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="font-bold text-slate-700 dark:text-slate-300">Summary & Key Provisions:</label>
+            <textarea value={resDesc} onChange={e => setResDesc(e.target.value)} required rows={4} placeholder="Summary of key provisions, exam importance, background and impact..." className="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <button type="submit" className="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold shadow-md flex items-center gap-2">
+            <Plus className="w-4 h-4" />
+            <span>Save Resource & Sync to Supabase</span>
           </button>
         </form>
       )}

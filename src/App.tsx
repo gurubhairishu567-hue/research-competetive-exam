@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
 
 import { AdminGuardModal } from './components/common/AdminGuardModal';
+import { AuthModal } from './components/common/AuthModal';
+import { SeasonalThemeBanner } from './components/common/SeasonalThemeBanner';
+import { FESTIVAL_THEMES } from './data/festivalThemes';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -31,8 +34,25 @@ import { BookmarksPage } from './pages/BookmarksPage';
 import { AdminPage } from './pages/AdminPage';
 
 const MainLayout: React.FC = () => {
-  const { currentPage } = useApp();
+  const { 
+    currentPage, 
+    theme, 
+    showAuthModal, 
+    setShowAuthModal, 
+    authModalMode,
+    effectiveFestivalTheme 
+  } = useApp();
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const activeFestivalConfig = FESTIVAL_THEMES[effectiveFestivalTheme] || FESTIVAL_THEMES.classic;
 
   const renderCurrentPage = () => {
     switch (currentPage) {
@@ -86,8 +106,11 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors selection:bg-indigo-600 selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors selection:bg-indigo-600 selection:text-white relative">
       
+      {/* Top Dynamic Seasonal & Indian Festival Ribbon */}
+      <SeasonalThemeBanner />
+
       {/* Top Navigation Bar */}
       <Navbar onToggleMobileSidebar={() => setIsMobileSidebarOpen(prev => !prev)} />
 
@@ -108,6 +131,13 @@ const MainLayout: React.FC = () => {
 
       {/* Page Footer */}
       <Footer />
+
+      {/* Global Simple & Static Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode={authModalMode}
+      />
 
       {/* Global Admin Permission Guard Modal */}
       <AdminGuardModal />

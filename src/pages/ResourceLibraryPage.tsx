@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { createResourceInSupabase, deleteResourceFromSupabase } from '../lib/supabase';
 import {
   Library,
   Search,
@@ -29,7 +30,8 @@ import {
   Tag,
   Share2,
   BookMarked,
-  Info
+  Info,
+  Lock
 } from 'lucide-react';
 import {
   PARLIAMENT_BILLS_DATA,
@@ -42,7 +44,7 @@ import {
 } from '../data/libraryData';
 
 export const ResourceLibraryPage: React.FC = () => {
-  const { addBookmark, recordDownloadedItem } = useApp();
+  const { addBookmark, recordDownloadedItem, isAdmin, triggerAdminLock, user } = useApp();
 
   // Active Tab
   const [activeTab, setActiveTab] = useState<'parliament-bills' | 'govt-reports' | 'ncert-books' | 'standard-books' | 'my-pdfs'>('parliament-bills');
@@ -177,6 +179,10 @@ This digital study document is curated for educational preparation.
 
   const handleAddUserPdfSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAdmin) {
+      triggerAdminLock('Add Library Resource / PDF');
+      return;
+    }
     if (!newTitle.trim()) return;
 
     const newItem: StandardBookItem = {
@@ -210,9 +216,12 @@ This digital study document is curated for educational preparation.
     };
 
     setUserPdfList(prev => [newItem, ...prev]);
+    // Supabase Backend Sync
+    createResourceInSupabase(newItem, user?.email || 'gurubhairishu567@gmail.com');
+
     setIsAddModalOpen(false);
     setActiveTab('my-pdfs');
-    setToastMessage(`Successfully added "${newTitle}" to your PDF Vault!`);
+    setToastMessage(`Successfully added "${newTitle}" & synced to Supabase database!`);
 
     // Reset
     setNewTitle('');
@@ -224,8 +233,13 @@ This digital study document is curated for educational preparation.
   };
 
   const handleDeleteUserPdf = (id: string) => {
+    if (!isAdmin) {
+      triggerAdminLock('Delete Library Resource');
+      return;
+    }
     setUserPdfList(prev => prev.filter(p => p.id !== id));
-    setToastMessage('Removed book PDF from your library.');
+    deleteResourceFromSupabase(id);
+    setToastMessage('Removed book PDF from your library & Supabase backend.');
     setTimeout(() => setToastMessage(null), 3000);
   };
 
@@ -321,11 +335,18 @@ This digital study document is curated for educational preparation.
           </div>
 
           <button
-            onClick={() => setIsAddModalOpen(true)}
+            onClick={() => {
+              if (!isAdmin) {
+                triggerAdminLock('Add Custom Book / PDF to Library');
+              } else {
+                setIsAddModalOpen(true);
+              }
+            }}
             className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg transition flex items-center gap-2 shrink-0 self-start lg:self-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Add Custom Book / PDF</span>
+            {!isAdmin ? <Lock className="w-3.5 h-3.5 text-amber-300 ml-1" /> : <ShieldCheck className="w-3.5 h-3.5 text-emerald-300 ml-1" />}
           </button>
         </div>
 

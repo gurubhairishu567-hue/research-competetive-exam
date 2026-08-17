@@ -383,6 +383,57 @@ export async function createQuestionInSupabase(question: any, userEmail: string 
 }
 
 /**
+ * Inserts or updates a Resource / Book / PDF / Parliament Bill in Supabase database.
+ */
+export async function createResourceInSupabase(resource: any, userEmail: string = 'gurubhairishu567@gmail.com') {
+  try {
+    const payload = {
+      id: resource.id || `res-${Date.now()}`,
+      title: resource.title,
+      category: resource.category || 'General',
+      author: resource.author || 'Author',
+      exam_relevance: Array.isArray(resource.exam) ? resource.exam.join(', ') : (resource.exam || 'UPSC CSE'),
+      description: resource.description || resource.summaryOverview || resource.title,
+      download_url: resource.download_url || resource.buyLinks?.amazon || '',
+      read_url: resource.read_url || resource.buyLinks?.flipkart || '',
+      created_by_email: userEmail
+    };
+
+    const { data, error } = await supabase
+      .from('resources')
+      .upsert(payload, { onConflict: 'id' });
+
+    if (error) {
+      await saveToSupabase(`resource_${payload.id}`, payload, userEmail);
+      return { success: true, fallback: true };
+    }
+
+    return { success: true, data };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Deletes a Resource from Supabase.
+ */
+export async function deleteResourceFromSupabase(resourceId: string) {
+  try {
+    const { error } = await supabase
+      .from('resources')
+      .delete()
+      .eq('id', resourceId);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+/**
  * Tests connection to the user's Supabase instance.
  */
 export async function testSupabaseConnection(): Promise<{ connected: boolean; message: string; details?: any }> {
